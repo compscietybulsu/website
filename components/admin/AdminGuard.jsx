@@ -6,16 +6,14 @@ import { getToken } from "@/lib/auth";
 
 export default function AdminGuard({ children }) {
   const router = useRouter();
-  const [checked, setChecked] = useState(false);
+  const [hasToken] = useState(() => Boolean(getToken()));
 
   useEffect(() => {
-    if (!getToken()) {
+    if (!hasToken) {
       router.replace("/admin");
-    } else {
-      setChecked(true);
     }
-  }, [router]);
+  }, [hasToken, router]);
 
-  if (!checked) return null;
+  if (!hasToken) return null;
   return children;
 }
