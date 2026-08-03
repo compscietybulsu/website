@@ -1,9 +1,9 @@
 ---
-name: compsciety-frontend
-description: Guides Next.js App Router UI work for the CompSciety website — page/component structure, Tailwind v4 conventions, and the existing green matrix/glassmorphism brand language. Use when editing files under app/ or components/ (Hero, Navbar, Footer, About*, Blog*, AnnouncementCarousel, PartnersSection, ui/*) — trigger terms: Next.js, App Router, Tailwind, component, Hero, Navbar, brand, UI, page.js.
+name: website-frontend
+description: Guides Next.js App Router UI work for this website — page/component structure, Tailwind v4 conventions, and the existing green matrix/glassmorphism brand language. Use when editing files under app/ or components/ (Hero, Navbar, Footer, About*, Blog*, AnnouncementCarousel, PartnersSection, ui/*) — trigger terms: Next.js, App Router, Tailwind, component, Hero, Navbar, brand, UI, page.js.
 ---
 
-# CompSciety Frontend
+# Website Frontend
 
 Next.js 16 App Router, React 19, Tailwind CSS v4 (via `@tailwindcss/postcss`,
 no `tailwind.config.js` theme in use — theming is CSS-first in `app/globals.css`).
@@ -67,9 +67,9 @@ Grep for `TODO` before assuming these are bugs:
   photo.
 - **Broken link**: `Navbar` and `Footer` both link to `/contact`, but no
   `app/contact/page.js` exists yet. If your task touches navigation, flag or
-  fix this — see `compsciety-review`.
+  fix this — see `website-review`.
 
-See `compsciety-content` for the static-vs-API decision when replacing these.
+See `website-content` for the static-vs-API decision when replacing these.
 
 ## Conventions
 

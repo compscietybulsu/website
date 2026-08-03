@@ -16,12 +16,12 @@ a symlink at `.cursor/skills -> ../.agents/skills`. See
 
 | Skill | Path | Use it when |
 | --- | --- | --- |
-| `compsciety-spec` | `.agents/skills/compsciety-spec/SKILL.md` | Starting any task; checking for SPEC/AGENTS drift; running lint/build validation |
-| `compsciety-frontend` | `.agents/skills/compsciety-frontend/SKILL.md` | Editing `app/` or `components/` — Hero, Navbar, About, Blog, shared UI, brand styling |
-| `compsciety-backend` | `.agents/skills/compsciety-backend/SKILL.md` | Editing `server/` — Express routes, Mongoose models, JWT admin auth, Cloudinary uploads |
-| `compsciety-content` | `.agents/skills/compsciety-content/SKILL.md` | Editing static content (`lib/aboutContent.js`, officers/partners/announcements) or deciding static vs API-backed content |
-| `compsciety-handoff` | `.agents/skills/compsciety-handoff/SKILL.md` | Ending a session or switching agents (agy ↔ Cursor ↔ Kiro) mid-task |
-| `compsciety-review` | `.agents/skills/compsciety-review/SKILL.md` | Reviewing a PR/diff before merge — secrets, drift, broken links, lockfile hygiene |
+| `website-spec` | `.agents/skills/website-spec/SKILL.md` | Starting any task; checking for SPEC/AGENTS drift; running lint/build validation |
+| `website-frontend` | `.agents/skills/website-frontend/SKILL.md` | Editing `app/` or `components/` — Hero, Navbar, About, Blog, shared UI, brand styling |
+| `website-backend` | `.agents/skills/website-backend/SKILL.md` | Editing `server/` — Express routes, Mongoose models, JWT admin auth, Cloudinary uploads |
+| `website-content` | `.agents/skills/website-content/SKILL.md` | Editing static content (`lib/aboutContent.js`, officers/partners/announcements) or deciding static vs API-backed content |
+| `agent-handoff` | `.agents/skills/agent-handoff/SKILL.md` | Ending a session or switching agents (agy ↔ Cursor ↔ Kiro) mid-task |
+| `website-review` | `.agents/skills/website-review/SKILL.md` | Reviewing a PR/diff before merge — secrets, drift, broken links, lockfile hygiene |
 
 ## How agents discover these
 

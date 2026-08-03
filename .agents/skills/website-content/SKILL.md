@@ -1,9 +1,9 @@
 ---
-name: compsciety-content
+name: website-content
 description: Explains how static content modules (lib/aboutContent.js and similar) are organized, where placeholders/TODOs live, and when to move content to the backend API versus keeping it static. Use when editing copy, officers/partners/announcements data, or deciding whether new content needs a database model — trigger terms: aboutContent, placeholder, TODO, officers, partners, announcements, static content, CMS.
 ---
 
-# CompSciety Content Strategy
+# Website Content Strategy
 
 Most non-blog content on this site is **hardcoded in components or small `lib/`
 modules**, not fetched from the API. Only blog posts are backend-driven today.
@@ -62,7 +62,7 @@ exists yet, prefer **one of these two paths** explicitly (don't half-do both):
    paths under `public/` or `assets/`. Fastest, fine for content that changes
    ~once a term.
 2. **Backend-ize**: add a Mongoose model + routes mirroring `Blog`
-   (see `compsciety-backend`), then fetch client-side like `app/blog/page.js`
+   (see `website-backend`), then fetch client-side like `app/blog/page.js`
    does. Only do this if asked or if the content will need frequent
    non-developer edits.
 

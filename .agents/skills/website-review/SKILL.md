@@ -1,9 +1,9 @@
 ---
-name: compsciety-review
-description: Provides a PR/diff review checklist specific to the CompSciety website repo — secrets, SPEC/AGENTS drift, broken navigation links, leftover placeholder copy, and lockfile hygiene. Use before opening a PR, when reviewing someone else's diff, or when asked to self-check changes — trigger terms: review, PR checklist, code review, secrets scan, lockfile, broken link.
+name: website-review
+description: Provides a PR/diff review checklist specific to this website repo — secrets, SPEC/AGENTS drift, broken navigation links, leftover placeholder copy, and lockfile hygiene. Use before opening a PR, when reviewing someone else's diff, or when asked to self-check changes — trigger terms: review, PR checklist, code review, secrets scan, lockfile, broken link.
 ---
 
-# CompSciety PR / Diff Review Checklist
+# Website Review Checklist
 
 Run through this before opening a PR, and again when reviewing one.
 
@@ -24,7 +24,7 @@ git diff main...HEAD -- '*.env*'
 
 ## 2. SPEC / AGENTS drift
 
-See `compsciety-spec` for the full checklist. Quick version:
+See `website-spec` for the full checklist. Quick version:
 
 - [ ] If `SPEC.md` exists and this PR changes behavior/routes/env vars, SPEC
       is updated in the same PR.
@@ -62,7 +62,7 @@ git diff main...HEAD | grep -n "TODO\|lorem ipsum\|yourhandle\|placeholder"
       errors).
 - [ ] If `server/` changed: server starts (`pnpm dev` in `server/`) and
       `GET /api/health` still returns `{ status: "ok" }`.
-- [ ] New/changed API routes match the table in `compsciety-backend` — update
+- [ ] New/changed API routes match the table in `website-backend` — update
       that skill's route table if you added/removed a route.
 - [ ] Auth-sensitive routes still go through `verifyAdmin`; no accidental
       removal of the middleware.
@@ -85,7 +85,7 @@ git status --porcelain | grep -E "package-lock.json|pnpm-lock.yaml"
 
 ## 7. Style consistency
 
-- [ ] New UI matches the brand language in `compsciety-frontend` (color
+- [ ] New UI matches the brand language in `website-frontend` (color
       tokens, `rounded-full`/`rounded-2xl` shapes, `font-heading`) rather than
       introducing a new palette.
 - [ ] Client components only use `"use client"` when they actually need

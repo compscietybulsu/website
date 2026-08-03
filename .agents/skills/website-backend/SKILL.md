@@ -1,9 +1,9 @@
 ---
-name: compsciety-backend
-description: Guides work on the Express + Mongoose API server for the CompSciety website — routes, models, JWT admin auth, Cloudinary signed uploads, and env vars. Use when editing files under server/ (server.js, routes/, models/, middleware/, config/, scripts/) — trigger terms: Express, Mongoose, JWT, Cloudinary, API route, admin auth, blog CRUD, server.js.
+name: website-backend
+description: Guides work on the Express + Mongoose API server for this website — routes, models, JWT admin auth, Cloudinary signed uploads, and env vars. Use when editing files under server/ (server.js, routes/, models/, middleware/, config/, scripts/) — trigger terms: Express, Mongoose, JWT, Cloudinary, API route, admin auth, blog CRUD, server.js.
 ---
 
-# CompSciety Backend
+# Website Backend
 
 Standalone Express 5 API in `server/` (separate `package.json`, ESM `"type":
 "module"`, own lockfile). Not part of the Next.js build — run and deploy

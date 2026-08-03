@@ -1,9 +1,9 @@
 ---
-name: compsciety-handoff
+name: agent-handoff
 description: Provides a HANDOFF.md template and rules for ending an agent session or switching between agents (agy, Cursor, Kiro) on the same branch. Use when a task is paused, incomplete, or being transferred to another agent/session — trigger terms: handoff, HANDOFF.md, pause work, switch agent, next steps, context transfer.
 ---
 
-# CompSciety Agent Handoff
+# Agent Handoff
 
 When work on a branch is paused, incomplete, or about to be picked up by a
 different agent (or a different session of the same agent), leave a
@@ -57,12 +57,12 @@ handoff noise for trivial work.
 - **Cap next steps at 3.** If there are more than 3 real next steps, the task
   is too big for one handoff — split it and note the split instead.
 - **Be honest about validation.** Don't write "pass" for a command you didn't
-  actually run in this session (see `compsciety-spec` for the commands).
+  actually run in this session (see `website-spec` for the commands).
 - **No secrets.** Never paste `.env` values, tokens, or credentials into
   `HANDOFF.md`, even temporarily — reference env var *names* only.
 - **One file per branch.** If `HANDOFF.md` already exists on the branch,
   update it in place (overwrite stale sections) rather than appending a
   second competing handoff.
 - If the receiving agent is Cursor or agy and skills are relevant to the next
-  steps, name the specific skill (e.g. "see `compsciety-backend` before
+  steps, name the specific skill (e.g. "see `website-backend` before
   touching `server/routes/blogs.js`") instead of re-explaining repo structure.

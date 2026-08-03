@@ -1,9 +1,9 @@
 ---
-name: compsciety-spec
-description: Keeps code changes in sync with this repo's SPEC.md and AGENTS.md contracts (when present) and runs the validation commands before calling work done. Use when starting any task in the CompSciety website repo, before proposing a design change, or before opening a PR — trigger terms: spec drift, AGENTS.md, SPEC.md, validation, lint, build, acceptance criteria.
+name: website-spec
+description: Keeps code changes in sync with this repo's SPEC.md and AGENTS.md contracts (when present) and runs the validation commands before calling work done. Use when starting any task in this website repo, before proposing a design change, or before opening a PR — trigger terms: spec drift, AGENTS.md, SPEC.md, validation, lint, build, acceptance criteria.
 ---
 
-# CompSciety Spec & Drift Control
+# Website Spec Compliance
 
 This repo may or may not have a root `AGENTS.md` / `SPEC.md` yet — check first,
 don't assume either exists.
@@ -62,7 +62,7 @@ message itself changed unexpectedly.
 ## 4. Lockfile hygiene
 
 This repo currently has both `package-lock.json` (tracked) and a `pnpm-lock.yaml`
-in flux — see `compsciety-review` skill. When you run `pnpm install`, do not also
+in flux — see `website-review` skill. When you run `pnpm install`, do not also
 regenerate `package-lock.json`; prefer removing npm lockfiles in favor of pnpm's
 once the team confirms the switch, and call this out explicitly in your PR
 description rather than silently deleting files.
@@ -71,4 +71,4 @@ description rather than silently deleting files.
 
 If you notice drift (spec says X, code does Y) that's out of scope for your
 current task, note it in your PR description or a `HANDOFF.md` (see
-`compsciety-handoff`) rather than silently fixing unrelated things.
+`agent-handoff`) rather than silently fixing unrelated things.
