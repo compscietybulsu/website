@@ -1,8 +1,9 @@
 # docs/tickets.md — Issue backlog
 
 GitHub-ready tickets, one section each. Copy a section's title + body
-straight into a new issue. Labels are proposed, not yet created in the repo
-— create them on first use if missing.
+straight into a new issue. Org labels already exist in the repo — use the
+labels below as-is; only create a new label if a ticket genuinely needs one
+that isn't already listed.
 
 Cross-reference: `SPEC.md` for the contract, `tasks.md` for execution order
 (`T0xx` IDs below match `tasks.md`).
@@ -22,7 +23,7 @@ guardrails.
 Acceptance criteria:
 - [ ] `AGENTS.md`, `SPEC.md`, `tasks.md`, `docs/tickets.md` exist and are
   linked from `README.md`
-- [ ] `CLAUDE.md`, `.kiro/steering/*`, `.cursor/rules/compsciety.mdc`,
+- [ ] `CLAUDE.md`, `.kiro/steering/*`, `.cursor/rules/website.mdc`,
   `.agy/AGENTS.md` all point back to `AGENTS.md`/`SPEC.md`
 - [ ] No SSH/GPG/git-profile personal tooling is documented in any
   committed file
@@ -308,7 +309,7 @@ Suggested files: `server/routes/blogs.js`, `app/blog/page.js`,
 
 ## 13. README rewrite for pnpm + full-stack run instructions
 
-**Labels:** `type:docs`, `area:docs`, `priority:p0`, `size:S`
+**Labels:** `type:docs`, `area:ops`, `priority:p0`, `size:S`
 
 **Body**
 
