@@ -1,10 +1,93 @@
 # CompSciety Website
 
-Official website for the Computer Science Society, built with Next.js (App Router) + Tailwind CSS v4.
+Official website for the Computer Science Society (CompSciety, BulSU).
 
-## Getting started
+Two apps in this repo:
+- **Frontend** (repo root) — Next.js 16 (App Router), React 19, Tailwind CSS v4
+- **Backend** (`server/`) — Express 5, Mongoose (MongoDB), JWT admin auth, Cloudinary image uploads
+
+Read [`AGENTS.md`](./AGENTS.md) for repo guardrails and
+[`SPEC.md`](./SPEC.md) for the full product contract (architecture, API
+contracts, feature checklist, and known gaps).
+
+Package manager: **pnpm** only. Do not use `npm` or `yarn`.
+
+## Prerequisites
+
+- Node.js 20+
+- [pnpm](https://pnpm.io/installation)
+- A MongoDB connection string (e.g. [MongoDB Atlas](https://www.mongodb.com/atlas))
+- A [Cloudinary](https://cloudinary.com/) account (for admin blog image uploads)
+
+## Setup
+
+Frontend (repo root):
 
 ```bash
-npm install
-npm run dev
+pnpm install
+cp .env.example .env.local
+# fill in NEXT_PUBLIC_API_URL in .env.local
 ```
+
+Backend (`server/`):
+
+```bash
+cd server
+pnpm install
+cp .env.example .env
+# fill in MONGODB_URI, JWT_SECRET, CLOUDINARY_*, etc. in .env
+```
+
+See `.env.example` and `server/.env.example` for the full list of required
+variables — no real values are committed anywhere in this repo.
+
+## Running locally
+
+Run both dev servers in separate terminals.
+
+Backend:
+
+```bash
+cd server
+pnpm dev
+```
+
+Frontend (from repo root):
+
+```bash
+pnpm dev
+```
+
+The frontend expects the backend reachable at `NEXT_PUBLIC_API_URL`
+(defaults to nothing — you must set it in `.env.local`, e.g.
+`http://localhost:5000`).
+
+## Creating an admin account
+
+Admin accounts are not self-service. Create one from the backend:
+
+```bash
+cd server
+node scripts/createAdmin.js <username> <password>
+```
+
+Then log in at `/admin`.
+
+## Other scripts
+
+Frontend:
+
+```bash
+pnpm build   # production build
+pnpm start   # run the production build
+pnpm lint    # eslint
+```
+
+## Project docs
+
+- [`AGENTS.md`](./AGENTS.md) — repo layout, guardrails, how AI agents and
+  contributors should work here
+- [`SPEC.md`](./SPEC.md) — architecture, API/data contracts, feature
+  checklist, known gaps, validation criteria
+- [`tasks.md`](./tasks.md) — dependency-ordered execution plan
+- [`docs/tickets.md`](./docs/tickets.md) — GitHub-issue-ready backlog
