@@ -75,6 +75,26 @@ These are not suggestions.
 | `.cursor/rules/compsciety.mdc` | Always-applied Cursor rule pointing here |
 | `.agy/AGENTS.md` | agy entry point pointing here |
 | `README.md` | Human-facing setup/run instructions (pnpm) |
+| `docs/agent-skills.md` | Project skills index (agy + Cursor); canonical under `.agents/skills/` |
+
+
+## Skills (agy + Cursor)
+
+Project skills ship in a **separate PR** (`feat/agent-skills`). Canonical path:
+`.agents/skills/*/SKILL.md`. Cursor uses the symlink `.cursor/skills -> ../.agents/skills`.
+
+Index: [`docs/agent-skills.md`](docs/agent-skills.md).
+
+| Skill | Use when |
+|---|---|
+| `compsciety-spec` | Start of work; SPEC/AGENTS drift; lint/build validation |
+| `compsciety-frontend` | `app/` / `components/` UI and brand styling |
+| `compsciety-backend` | `server/` Express, Mongoose, JWT, Cloudinary |
+| `compsciety-content` | Static content vs API-backed content decisions |
+| `compsciety-handoff` | Agent/session switch (agy ↔ Cursor ↔ Kiro) |
+| `compsciety-review` | PR review: secrets, drift, dead links, lockfiles |
+
+Do not invent a second skills tree. Keep Cursor and agy on the same files.
 
 ## Maintainer note
 
