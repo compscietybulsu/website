@@ -13,7 +13,7 @@ Conventions:
 ## Phase 0 — Agent scaffold (this PR)
 
 - [x] **T001** Add `AGENTS.md`, `CLAUDE.md`, `.kiro/steering/*`,
-  `.cursor/rules/compsciety.mdc`, `.agy/AGENTS.md`, `SPEC.md`, `tasks.md`,
+  `.cursor/rules/website.mdc`, `.agy/AGENTS.md`, `SPEC.md`, `tasks.md`,
   `docs/tickets.md`, updated `README.md`, `.env.example`,
   `server/.env.example`.
   Files: repo root, `.kiro/`, `.cursor/`, `.agy/`, `docs/`.
