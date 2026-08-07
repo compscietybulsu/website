@@ -1,20 +1,23 @@
 # docs/tickets.md — Issue backlog
 
-GitHub issues are filed for every entry below. Prefer the issue as the
-source of truth for status; this file keeps the original bodies, labels,
-and `T0xx` cross-references for agents and humans.
+GitHub Issues are the tracker of record. This file keeps historical issue
+bodies, labels, and `T0xx` cross-references. There is no `tasks.md`.
 
-Milestones: [Scaffolding](https://github.com/compscietybulsu/website/milestone/1) ·
+**Active P0** (see `AGENTS.md`): Cloudflare deploy · remote dev · backend prep.
+Skills: `website-deploy-cf`, `website-remote-dev`, `website-backend-prep`.
+
+Milestones: [Priority](https://github.com/compscietybulsu/website/milestone/5) ·
+[Scaffolding](https://github.com/compscietybulsu/website/milestone/1) ·
 [MVP](https://github.com/compscietybulsu/website/milestone/2) ·
 [V1](https://github.com/compscietybulsu/website/milestone/3) ·
 [Future](https://github.com/compscietybulsu/website/milestone/4).
 
-Cross-reference: `SPEC.md` for the contract, `tasks.md` for execution order
-(`T0xx` IDs below match `tasks.md`).
+P0 issues (milestone Priority):
+- [#24](https://github.com/compscietybulsu/website/issues/24) Cloudflare Workers / OpenNext (+ Pages where static)
+- [#26](https://github.com/compscietybulsu/website/issues/26) Remote / Codespaces Dev Containers
+- [#27](https://github.com/compscietybulsu/website/issues/27) Backend prep for public frontend
 
-Extra filed issues not mirrored as sections here:
-- [#6](https://github.com/compscietybulsu/website/issues/6) Dual-agent project skills (Scaffolding; landed via PR #1)
-- [#24](https://github.com/compscietybulsu/website/issues/24) Deploy Next.js to Cloudflare Workers / OpenNext (Future)
+Also: [#6](https://github.com/compscietybulsu/website/issues/6) Dual-agent skills (closed)
 
 ---
 ## 1. Agent scaffolding landed (meta)
@@ -31,16 +34,16 @@ Problem: the repo had no `AGENTS.md`/`SPEC.md`/task tracking, so contributors
 guardrails.
 
 Acceptance criteria:
-- [ ] `AGENTS.md`, `SPEC.md`, `tasks.md`, `docs/tickets.md` exist and are
-  linked from `README.md`
-- [ ] `CLAUDE.md`, `.kiro/steering/*`, `.cursor/rules/website.mdc`,
+- [x] `AGENTS.md`, `SPEC.md`, `docs/tickets.md` exist and are linked from
+  `README.md` (`tasks.md` removed on purpose — GitHub Issues are the tracker)
+- [x] `CLAUDE.md`, `.kiro/steering/*`, `.cursor/rules/website.mdc`,
   `.agy/AGENTS.md` all point back to `AGENTS.md`/`SPEC.md`
-- [ ] No SSH/GPG/git-profile personal tooling is documented in any
+- [x] No SSH/GPG/git-profile personal tooling is documented in any
   committed file
 
 SPEC refs: `SPEC.md` §1–§6 (whole file).
 
-Suggested files: `AGENTS.md`, `SPEC.md`, `tasks.md`, `docs/tickets.md`.
+Suggested files: `AGENTS.md`, `SPEC.md`, `docs/tickets.md`.
 
 ---
 

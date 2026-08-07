@@ -162,6 +162,18 @@ These are real gaps in the shipped product, not proposals:
 
 ## 5. Feature checklist
 
+### Active priority (org — supersedes older MVP/V1 ordering for now)
+
+Ship in this order unless explicitly redirected:
+
+1. **Cloudflare deploy** — Next.js on Workers (OpenNext); Pages only for true static artifacts. Tracker: [#24](https://github.com/compscietybulsu/website/issues/24).
+2. **Remote dev** — Codespaces / Dev Containers reliable for contributors. Tracker: [#26](https://github.com/compscietybulsu/website/issues/26).
+3. **Backend prep** — Express API ready for a public frontend (CORS, auth hardening, lockfiles, deploy docs). API does **not** run on Workers. Tracker: [#27](https://github.com/compscietybulsu/website/issues/27).
+
+Agent skills: `website-deploy-cf`, `website-remote-dev`, `website-backend-prep` (see `AGENTS.md`).
+
+Older MVP/V1/Future checklist items below remain the product contract; treat them as backlog relative to the three tracks above.
+
 ### MVP (must-have — required for a credible public launch)
 
 - [x] Public home page with nav, hero, announcements, partners, about teaser, footer
