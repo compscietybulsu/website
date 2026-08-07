@@ -4,7 +4,7 @@ import { useState } from "react";
 import { uploadImage } from "@/lib/cloudinary";
 import { getToken } from "@/lib/auth";
 
-export default function ImageUploader({ value, onChange }) {
+export default function ImageUploader({ value, onChange, label = "Image" }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,7 +24,7 @@ export default function ImageUploader({ value, onChange }) {
 
   return (
     <div>
-      <label className="block text-sm font-heading font-semibold text-white mb-2">Blog Image</label>
+      <label className="block text-sm font-heading font-semibold text-white mb-2">{label}</label>
       <div
         className="rounded-xl border-2 border-dashed border-green-700/50 bg-[#0d2818] p-4 text-center cursor-pointer hover:border-green-400 transition-colors"
         onDragOver={(e) => e.preventDefault()}

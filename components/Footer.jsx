@@ -8,20 +8,20 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact", href: "#site-footer" },
 ];
 
 // Updated to include hrefs
 const SOCIALS = [
-  { icon: FaYoutube, href: "https://youtube.com/@yourhandle" },
-  { icon: FaInstagram, href: "https://instagram.com/yourhandle" },
-  { icon: FaLinkedin, href: "https://linkedin.com/company/yourhandle" },
-  { icon: FaFacebook, href: "https://facebook.com/yourhandle" },
+  { icon: FaYoutube, href: "https://youtube.com" },
+  { icon: FaInstagram, href: "https://www.instagram.com/compscietybulsu2025/" },
+  { icon: FaLinkedin, href: "https://ph.linkedin.com/in/computer-science-society-bulsu-705740378" },
+  { icon: FaFacebook, href: "https://www.facebook.com/compscietybulsu2025" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="mt-24 bg-black px-4 sm:px-8 pt-14 pb-8">
+    <footer className="mt-24 bg-black px-4 sm:px-8 pt-14 pb-8" id="site-footer">
       <div className="mx-auto max-w-5xl grid sm:grid-cols-3 gap-10">
         <div>
           <div className="flex items-center gap-3">
@@ -45,8 +45,6 @@ export default function Footer() {
             ))}
           </div>
         </div>
-
-        {/* ... rest of your code remains the same ... */}
         
         <div>
           <h5 className="font-heading font-bold text-white mb-4">Navigation</h5>
@@ -70,7 +68,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto max-w-5xl border-t border-green-900/50 mt-10 pt-6 text-center text-xs text-green-200/40">
-        © 2026 CompSciety. All rights reserved.
+        © 2025 Computer Science Society - BulSU. All rights reserved.
       </div>
     </footer>
   );

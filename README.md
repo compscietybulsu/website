@@ -77,17 +77,13 @@ Then log in at `/admin`.
 
 Frontend:
 
+Open a Terminal and type the following
 ```bash
-pnpm build   # production build
-pnpm start   # run the production build
-pnpm lint    # eslint
+npm install
+npm run dev
 ```
-
-## Project docs
-
-- [`AGENTS.md`](./AGENTS.md) — repo layout, guardrails, how AI agents and
-  contributors should work here
-- [`SPEC.md`](./SPEC.md) — architecture, API/data contracts, feature
-  checklist, known gaps, validation criteria
-- [`tasks.md`](./tasks.md) — dependency-ordered execution plan
-- [`docs/tickets.md`](./docs/tickets.md) — GitHub-issue-ready backlog
+Open a separate Terminal and type the following
+```bash
+npm install
+npm run dev
+```

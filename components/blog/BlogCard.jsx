@@ -17,14 +17,17 @@ export default function BlogCard({ blog }) {
           )}
         </div>
       </Link>
-      <div>
+      <div className="flex flex-col items-start">
         <Link href={`/blog/${blog._id}`}>
           <h3 className="font-heading font-extrabold text-green-400 text-2xl sm:text-3xl mb-3 hover:text-green-300 transition-colors">
             {blog.title}
           </h3>
         </Link>
         <p className="text-green-100/80 text-sm leading-relaxed mb-5">{excerpt(blog.content)}</p>
-        <GradientPillButton href={`/blog/${blog._id}`}>Read More</GradientPillButton>
+        
+        <div className="flex flex-row w-lg">
+          <GradientPillButton href={`/blog/${blog._id}`} >Read More</GradientPillButton>
+        </div>
       </div>
     </div>
   );

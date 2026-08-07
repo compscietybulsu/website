@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
-import { getToken, clearToken } from "@/lib/auth";
+import { getToken } from "@/lib/auth";
 import AdminGuard from "@/components/admin/AdminGuard";
+import AdminNav from "@/components/admin/AdminNav";
 
 function DashboardContent() {
-  const router = useRouter();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -31,37 +30,27 @@ function DashboardContent() {
     }
   }
 
-  function handleLogout() {
-    clearToken();
-    router.push("/admin");
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#020806] via-[#0a2818] to-[#0d3320] px-4 sm:px-8 py-10">
       <div className="mx-auto max-w-4xl">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="font-heading font-extrabold text-white text-3xl">Blog Dashboard</h1>
-          <button onClick={handleLogout} className="text-green-300 text-sm hover:text-white">
-            Log Out
-          </button>
-        </div>
+        <AdminNav />
 
-        <Link
-          href="/admin/blogs/new"
-          className="inline-block rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-6 py-3 mb-8 shadow-lg hover:opacity-90 transition-opacity"
-        >
-          + Add Blog
-        </Link>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="font-heading font-extrabold text-white text-3xl">Blogs</h1>
+          <Link
+            href="/admin/blogs/new"
+            className="rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-6 py-3 shadow-lg hover:opacity-90 transition-opacity"
+          >
+            + Add Blog
+          </Link>
+        </div>
 
         {loading && <p className="text-green-200/70">Loading...</p>}
         {error && <p className="text-red-400">{error}</p>}
 
         <div className="space-y-4">
           {blogs.map((blog) => (
-            <div
-              key={blog._id}
-              className="rounded-xl bg-[#0d2818] p-4 flex items-center justify-between gap-4"
-            >
+            <div key={blog._id} className="rounded-xl bg-[#0d2818] p-4 flex items-center justify-between gap-4">
               <div>
                 <p className="font-heading font-semibold text-white">{blog.title}</p>
                 <p className="text-green-200/60 text-xs mt-1">
