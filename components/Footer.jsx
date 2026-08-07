@@ -68,7 +68,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto max-w-5xl border-t border-green-900/50 mt-10 pt-6 text-center text-xs text-green-200/40">
-        © 2026 CompSciety. All rights reserved.
+        © 2025 Computer Science Society - BulSU. All rights reserved.
       </div>
     </footer>
   );

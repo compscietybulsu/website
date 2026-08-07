@@ -27,7 +27,8 @@ export default function PartnersSection() {
           <p className="text-white/70 text-sm">No partners added yet.</p>
         )}
 
-        <div className="flex flex-wrap items-center gap-8 sm:gap-12">
+        {/* Added justify-center here */}
+        <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12">
           {partners.map((partner) => (
             <div key={partner._id} className="relative group">
               <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden cursor-pointer border-2 border-transparent group-hover:border-white/60 transition-colors">
