@@ -68,3 +68,12 @@ export default function BlogArticlePage() {
     </div>
   );
 }
+
+export async function generateStaticParams() {
+  // Fetch or define your list of post IDs
+  const posts = [{ id: '1' }, { id: '2' }]; 
+ 
+  return posts.map((post) => ({
+    id: post.id,
+  }));
+}
