@@ -13,13 +13,17 @@ export default function Hero() {
           CompSciety
         </h1>
         <p className="mt-4 max-w-md text-green-300/80 text-sm sm:text-base">
-          This is the official Computer Science Society webpage. This text box is solely for
-          placeholder description or information about stuff.
+          This is the official Computer Science Society webpage. 
         </p>
         <div className="mt-8 sm:mt-0 sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2">
-          <button className="rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-8 py-4 shadow-xl shadow-green-950/40 hover:opacity-90 transition-opacity">
+          <a 
+            href="https://forms.gle/Qmfus594kxrXMCJd7" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-12 py-4 shadow-xl shadow-green-950/40 border-4 border-green-500 hover:opacity-90 transition-opacity"
+          >
             Sync Up!
-          </button>
+          </a>
         </div>
       </div>
     </section>

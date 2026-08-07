@@ -4,7 +4,14 @@ Official website for the Computer Science Society, built with Next.js (App Route
 
 ## Getting started
 
+Open a Terminal and type the following
 ```bash
 npm install
 npm run dev
 ```
+Open a separate Terminal and type the following
+```bash
+npm install
+npm run dev
+```
+
