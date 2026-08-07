@@ -13,10 +13,10 @@ const NAV_LINKS = [
 
 // Updated to include hrefs
 const SOCIALS = [
-  { icon: FaYoutube, href: "https://youtube.com/@yourhandle" },
-  { icon: FaInstagram, href: "https://instagram.com/yourhandle" },
-  { icon: FaLinkedin, href: "https://linkedin.com/company/yourhandle" },
-  { icon: FaFacebook, href: "https://facebook.com/yourhandle" },
+  { icon: FaYoutube, href: "https://youtube.com" },
+  { icon: FaInstagram, href: "https://www.instagram.com/compscietybulsu2025/" },
+  { icon: FaLinkedin, href: "https://ph.linkedin.com/in/computer-science-society-bulsu-705740378" },
+  { icon: FaFacebook, href: "https://www.facebook.com/compscietybulsu2025" },
 ];
 
 export default function Footer() {
