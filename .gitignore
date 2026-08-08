@@ -20,6 +20,7 @@
 
 # wrangler / OpenNext local secrets
 .dev.vars
+.dev.vars.*
 .wrangler/
 
 # production

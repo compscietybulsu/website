@@ -47,9 +47,12 @@ From the repo root:
 
 ```bash
 pnpm install
-pnpm preview   # OpenNext build + local Workers runtime
-pnpm deploy    # OpenNext build + deploy to Cloudflare Workers
+pnpm preview       # OpenNext build + local Workers runtime
+pnpm run deploy    # OpenNext build + deploy to Cloudflare Workers
 ```
+
+Use `pnpm run deploy` (not bare `pnpm deploy`) so the `package.json` script
+runs — `pnpm deploy` is pnpm’s publish command.
 
 Equivalent lower-level flow:
 
@@ -64,30 +67,28 @@ pnpm exec opennextjs-cloudflare preview   # or deploy
 ## First deploy
 
 1. Confirm auth: `pnpm exec wrangler whoami`
-2. Deploy: `pnpm deploy`
-3. Note the `*.workers.dev` URL from Wrangler output
-4. Smoke: home, about, and blog load without a paid plan; blog may show empty
-   state until `NEXT_PUBLIC_API_URL` points at a live API
+2. If the API is live, set `NEXT_PUBLIC_API_URL` **before** the OpenNext build
+   (it is inlined at build time — do not use `wrangler secret put` for this
+   client-side value):
+   - Workers Builds: add it under “Build variables and secrets”, or
+   - Local shell: `export NEXT_PUBLIC_API_URL=https://your-api.example.com`
+3. Deploy: `pnpm run deploy`
+4. Note the `*.workers.dev` URL from Wrangler output
+5. Smoke: home, about, and blog load without a paid plan; blog may show empty
+   state until a build that saw `NEXT_PUBLIC_API_URL` is deployed
 
-To set the API URL after deploy (example):
-
-```bash
-pnpm exec wrangler secret put NEXT_PUBLIC_API_URL
-# paste https://your-api.example.com
-```
-
-For `NEXT_PUBLIC_*` values that must be inlined at build time, prefer Workers
-Builds “Build variables and secrets” (or export them in the shell before
-`pnpm deploy`) so the Next build sees them. See Cloudflare’s Next.js Workers
-guide and the OpenNext env-vars howto linked above.
+See Cloudflare’s Next.js Workers guide and the OpenNext
+[environment variables](https://opennext.js.org/cloudflare/howtos/env-vars)
+howto linked above.
 
 ## CI / Workers Builds
 
 If you connect the GitHub repo to Workers Builds:
 
 - Install command: `pnpm install`
-- Build/deploy command: `pnpm deploy` (or `pnpm exec opennextjs-cloudflare build` then deploy step)
+- Build/deploy command: `pnpm run deploy` (or `pnpm exec opennextjs-cloudflare build` then deploy step)
 - Configure `NEXT_PUBLIC_API_URL` under build variables when the API exists
+  (must be present for the build step, not only as a runtime secret)
 
 ## Local Next.js (not Workers)
 
