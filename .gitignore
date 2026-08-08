@@ -16,6 +16,10 @@
 # next.js
 /.next/
 /out/
+.open-next
+
+# wrangler / OpenNext local secrets
+.dev.vars
 
 # production
 /build
