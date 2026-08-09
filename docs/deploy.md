@@ -52,16 +52,18 @@ pnpm exec wrangler r2 bucket create website-media
 # Apply D1 schema (remote)
 pnpm exec wrangler d1 migrations apply website-db --remote
 
-# Seed admin (does not echo password)
-ADMIN_USER=admin ADMIN_PASS='your-long-password' pnpm run seed:admin
+# Seed admin from gitignored `.dev.vars` (ADMIN_USER / ADMIN_PASS).
+# Do not put the password on the shell command line (history / process list).
+cp .dev.vars.example .dev.vars   # set JWT_SECRET, ADMIN_USER, ADMIN_PASS
+pnpm run seed:admin
 ```
 
 Local D1 / R2 for `pnpm preview`:
 
 ```bash
 pnpm exec wrangler d1 migrations apply website-db --local
-ADMIN_USER=admin ADMIN_PASS='local-dev-pass' pnpm run seed:admin:local
-cp .dev.vars.example .dev.vars   # set JWT_SECRET
+cp .dev.vars.example .dev.vars   # set JWT_SECRET, ADMIN_USER, ADMIN_PASS
+pnpm run seed:admin:local
 ```
 
 ## Scripts

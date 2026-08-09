@@ -34,9 +34,9 @@ Package manager: **pnpm** only.
 
 ```bash
 pnpm install
-cp .dev.vars.example .dev.vars   # set JWT_SECRET
+cp .dev.vars.example .dev.vars   # set JWT_SECRET, ADMIN_USER, ADMIN_PASS
 pnpm run db:migrate:local
-ADMIN_USER=admin ADMIN_PASS='local-dev-pass' pnpm run seed:admin:local
+pnpm run seed:admin:local        # reads ADMIN_* from .dev.vars
 ```
 
 ## Local development
@@ -61,17 +61,15 @@ Leave `NEXT_PUBLIC_API_URL` unset so the browser calls `/api` on the same origin
 pnpm exec wrangler r2 bucket create website-media   # once, after enabling R2
 pnpm run db:migrate
 pnpm exec wrangler secret put JWT_SECRET
-ADMIN_USER=admin ADMIN_PASS='...' pnpm run seed:admin
+# Put ADMIN_USER / ADMIN_PASS in gitignored `.dev.vars`, then:
+pnpm run seed:admin
 pnpm run deploy
 ```
 
-Workers Builds must use `pnpm run cf-build` + `pnpm run cf-upload` (not plain
-`pnpm run build`). Details: [`docs/deploy.md`](./docs/deploy.md).
+Workers Builds: empty build command + `pnpm run deploy` (see
+[`docs/deploy.md`](./docs/deploy.md)). Do not use plain `pnpm run build` alone.
 
 ## Admin login
 
-```bash
-ADMIN_USER=admin ADMIN_PASS='...' pnpm run seed:admin   # remote D1
-```
-
-Then open `/admin`.
+Credentials live in `.dev.vars` (`ADMIN_USER` / `ADMIN_PASS`). Seed with
+`pnpm run seed:admin`, then open `/admin`.
