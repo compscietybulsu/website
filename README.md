@@ -61,7 +61,9 @@ No secrets are baked into the image.
 
 ```bash
 cp .env.example .env.local
-# NEXT_PUBLIC_API_URL=http://localhost:5000 when the API runs in the same Codespace
+# NEXT_PUBLIC_API_URL=http://localhost:5000 for local dev or desktop Codespaces
+# Browser Codespaces: set NEXT_PUBLIC_API_URL to the forwarded port-5000 URL
+#   from the Ports tab (e.g. https://<codespace-name>-5000.app.github.dev)
 
 cp server/.env.example server/.env
 # For API work: MONGODB_URI (Atlas), JWT_SECRET, CLOUDINARY_*
@@ -107,13 +109,15 @@ vars as needed. A local Podman Mongo compose stack is out of scope for this path
 Use **pnpm** exclusively. Root and `server/` each have a `pnpm-lock.yaml`.
 Do not introduce `package-lock.json` workflows or `npm`/`yarn` install steps.
 
-### Podman locally vs docker-in-docker in Codespaces
+### Podman locally vs docker-in-docker in Dev Containers
 
-This project's local container convention is **Podman-first** (see `AGENTS.md`).
-GitHub Codespaces and the checked-in Dev Container use Microsoft's
-**docker-in-docker** feature because that is what Codespaces supports today.
-Prefer Podman on your laptop; use the Codespaces DinD path only inside the remote
-environment. Do not bake secrets into either image.
+This project's ordinary local development convention is **Podman-first** (see
+`AGENTS.md`). The checked-in `.devcontainer/devcontainer.json` — used by GitHub
+Codespaces and by VS Code / Cursor **Dev Containers: Reopen in Container** —
+unconditionally enables Microsoft's **docker-in-docker** feature because that is
+what Codespaces and the Dev Containers spec support today. Prefer Podman on your
+laptop for non-Dev-Container workflows; use the DinD path only when reopening in
+the checked-in Dev Container. Do not bake secrets into either image.
 
 ## Running locally
 

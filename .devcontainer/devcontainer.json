@@ -21,9 +21,6 @@
     "ghcr.io/compscietybulsu/devcontainer/act"
   ],
   "remoteUser": "vscode",
-  "containerEnv": {
-    "CI": "true"
-  },
   "remoteEnv": {
     "NODE_ENV": "development"
   },
