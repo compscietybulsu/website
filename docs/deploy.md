@@ -84,20 +84,33 @@ Use `pnpm run deploy` (not bare `pnpm deploy`). Root `pnpm-workspace.yaml` with
 
 ## CI: Workers Builds (production / main only)
 
-`pnpm run build` runs **OpenNext** (`opennextjs-cloudflare build`) and writes
-`.open-next/worker.js`. That matches a dashboard deploy of
-`npx wrangler versions upload` / `pnpm run cf-upload`.
+**Do not** set Build to `pnpm run build`. That is plain `next build`. OpenNext
+invokes `pnpm run build` itself, so the Worker entry is only created by
+`opennextjs-cloudflare build` / `pnpm run deploy`.
+
+### Required dashboard settings
+
+Workers → `website` → Settings → Builds:
 
 | Setting | Value |
 |---------|--------|
 | Install command | `pnpm install --frozen-lockfile` |
-| **Build command** | `pnpm run build` |
-| **Deploy command** | `pnpm run cf-upload` (or `npx wrangler versions upload`) |
+| **Build command** | leave **empty** (or `true`) |
+| **Deploy command** | `pnpm run deploy` |
 | Root directory | `/` |
-| Branch | production branch only (usually `main`) — no preview branch builds required |
+| Production branch | `main` |
 
-Plain `next build` alone will fail deploy with
-`entry-point file at ".open-next/worker.js" was not found` — use
-`build:next` only when you intentionally want a non-Worker Next build.
+`pnpm run deploy` = OpenNext build **then** Wrangler deploy (creates
+`.open-next/worker.js`).
+
+### What fails (your current log)
+
+| Setting | Wrong value (causes the error) |
+|---------|--------------------------------|
+| Build | `pnpm run build` → only `next build`, no `.open-next/` |
+| Deploy | `npx wrangler versions upload` → looks for missing `worker.js` |
+
+After you change the dashboard, **Retry** the build (or push to `main`).
+Updating settings does not rewrite old failed logs.
 
 Do **not** use classic Cloudflare Pages for this App Router / OpenNext app.
