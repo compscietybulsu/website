@@ -1,143 +1,103 @@
 # Deploy
 
-Frontend (Next.js) and backend (Express) are **two separate processes**. This
-document covers the Cloudflare path for the public site. Backend hosting
-(MongoDB Atlas, Cloudinary, CORS) stays on whatever host runs `server/` and is
-not migrated onto Workers.
+Production runs **entirely on Cloudflare Workers** (OpenNext):
 
-## Architecture split
+| Piece | Where | Notes |
+|-------|--------|--------|
+| Public site + admin UI | Worker `website` | `website.cssbulsu.workers.dev` |
+| REST API (`/api/*`) | Same Worker | Next.js App Router route handlers |
+| Structured data | **D1** `website-db` | blogs, partners, admins |
+| Images | **R2** `website-media` | served via `/api/media/...` |
+| Cloudflare Pages | **Not used** | Disable leftover Pages Git auto-deploy |
 
-| Piece | Runtime | Notes |
-|-------|---------|--------|
-| Public site (repo root) | **Cloudflare Workers** via OpenNext | Worker name `website`, account subdomain `cssbulsu` |
-| Cloudflare Pages | **Not used for this Next app** | Classic Pages cannot run OpenNext/App Router the way Workers does. Keep or disable any leftover Pages Git integration so it does not fight Workers Builds. |
-| API (`server/`) | Separate Node host | Express + MongoDB + Cloudinary |
+The Express + Mongo + Cloudinary stack under `server/` is **legacy** (local
+reference / migration only). Do not deploy it for production.
 
-### Live Workers URL (cssbulsu)
+## Live Workers URL (cssbulsu)
 
 | Item | Value |
 |------|--------|
 | Cloudflare account | `compscietybulsu` (`d8fdf8612e11f3aadb89085e8924cc41`) |
 | `workers.dev` subdomain | `cssbulsu` |
-| Worker script name | `website` (see `wrangler.jsonc`) |
+| Worker script name | `website` |
 | Production URL | https://website.cssbulsu.workers.dev |
-
-Set `NEXT_PUBLIC_API_URL` to the public API origin (no trailing slash) when the
-API is live. If it is unset, the frontend still ships static/marketing pages;
-blog/partners/admin data calls fail closed with empty or error UI (see
-`lib/api.js`).
 
 ## Prerequisites
 
 - Node.js 20+
 - [pnpm](https://pnpm.io/installation) (do not use npm/npx/yarn)
-- Cloudflare account + [Wrangler login](https://developers.cloudflare.com/workers/wrangler/commands/#login): `pnpm exec wrangler whoami` should list **compscietybulsu**
-- Optional: a deployed Express API URL for `NEXT_PUBLIC_API_URL`
+- Cloudflare account + Wrangler login: `pnpm exec wrangler whoami` → **compscietybulsu**
+- **R2 enabled** on the account (Dashboard → R2 → Enable). Bucket name: `website-media`
+- D1 database `website-db` (already created; id in `wrangler.jsonc`)
 
-## Frontend env vars (Workers)
+## Secrets and env
 
-Names only — set values in Wrangler / the Cloudflare dashboard / Workers
-Builds. Never commit real values.
+| Name | Where | Purpose |
+|------|--------|---------|
+| `JWT_SECRET` | `wrangler secret put JWT_SECRET` (prod); `.dev.vars` (local preview) | Admin JWT sign/verify |
+| `NEXT_PUBLIC_API_URL` | Usually **omit** | Same-origin `/api` by default. Only set if pointing at a legacy Express host. |
 
-| Variable | Required | Purpose |
-|----------|----------|---------|
-| `NEXT_PUBLIC_API_URL` | No | Base URL of the Express API. Omit or leave empty to degrade gracefully (read-only shell without live blog/partners data). |
+Never commit real values. Templates: `.env.example`, `.dev.vars.example`.
 
-For local Workers preview, copy `.dev.vars.example` → `.dev.vars` (gitignored),
-or use `.env.local` during `pnpm dev`. See OpenNext
-[environment variables](https://opennext.js.org/cloudflare/howtos/env-vars).
+```bash
+pnpm exec wrangler secret put JWT_SECRET
+```
 
-Backend secrets (`MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_*`, `CLIENT_URL`,
-etc.) belong only on the API host — see `server/.env.example`. Do not put them
-in Workers config or the repo-root frontend env files.
+## One-time: migrations, R2, admin
+
+```bash
+# Enable R2 in the dashboard first, then:
+pnpm exec wrangler r2 bucket create website-media
+
+# Apply D1 schema (remote)
+pnpm exec wrangler d1 migrations apply website-db --remote
+
+# Seed admin (does not echo password)
+ADMIN_USER=admin ADMIN_PASS='your-long-password' pnpm run seed:admin
+```
+
+Local D1 / R2 for `pnpm preview`:
+
+```bash
+pnpm exec wrangler d1 migrations apply website-db --local
+ADMIN_USER=admin ADMIN_PASS='local-dev-pass' pnpm run seed:admin:local
+cp .dev.vars.example .dev.vars   # set JWT_SECRET
+```
 
 ## Scripts
 
-From the repo root:
-
 ```bash
 pnpm install
-pnpm preview       # OpenNext build + local Workers runtime
-pnpm run deploy    # OpenNext build + deploy to Cloudflare Workers
+pnpm preview       # OpenNext build + local Workers runtime (bindings via wrangler)
+pnpm run deploy    # OpenNext build + deploy Worker
 ```
 
-Use `pnpm run deploy` (not bare `pnpm deploy`) so the `package.json` script
-runs — `pnpm deploy` is pnpm’s publish command.
-
-Equivalent lower-level flow:
-
-```bash
-pnpm exec opennextjs-cloudflare build
-pnpm exec opennextjs-cloudflare preview   # or deploy
-```
-
-`nodejs_compat` is enabled in `wrangler.jsonc`. Build output lives under
-`.open-next/` (gitignored). A root `pnpm-workspace.yaml` with `packages: ["."]`
-is required so Cloudflare Workers Builds (pnpm 10.11.x) can install.
+Use `pnpm run deploy` (not bare `pnpm deploy`). Root `pnpm-workspace.yaml` with
+`packages: ["."]` is required for Cloudflare Workers Builds (pnpm 10.11.x).
 
 ## First deploy / redeploy
 
-1. Confirm auth: `pnpm exec wrangler whoami` (account **compscietybulsu**)
-2. Confirm config: `wrangler.jsonc` → `name: "website"`, `account_id` set
-3. If the API is live, set `NEXT_PUBLIC_API_URL` **before** the OpenNext build
-   (it is inlined at build time — do not use `wrangler secret put` for this
-   client-side value):
-   - Workers Builds: add it under “Build variables and secrets”, or
-   - Local shell: `export NEXT_PUBLIC_API_URL=https://your-api.example.com`
-4. Deploy: `pnpm run deploy`
-5. Smoke: https://website.cssbulsu.workers.dev — home / about / blog
+1. `pnpm exec wrangler whoami` (compscietybulsu)
+2. R2 bucket exists; D1 migrations applied; `JWT_SECRET` set
+3. `pnpm run deploy`
+4. Smoke: `/`, `/blog`, `/api/health`, `/admin`
 
-See Cloudflare’s Next.js Workers guide and the OpenNext
-[environment variables](https://opennext.js.org/cloudflare/howtos/env-vars)
-howto linked above.
+## CI: Workers Builds (production / main only)
 
-## CI: Workers Builds vs Pages
-
-This repo’s production path is **Workers Builds → Worker `website`**.
-
-### Workers Builds dashboard (required)
-
-`pnpm run build` is **only** `next build`. It does **not** produce
-`.open-next/worker.js`. If the deploy step is `wrangler versions upload` /
-`wrangler deploy` after a plain Next build, you get:
-
-`ERROR The entry-point file at ".open-next/worker.js" was not found.`
-
-Set the Workers Builds project to:
+`pnpm run build` runs **OpenNext** (`opennextjs-cloudflare build`) and writes
+`.open-next/worker.js`. That matches a dashboard deploy of
+`npx wrangler versions upload` / `pnpm run cf-upload`.
 
 | Setting | Value |
 |---------|--------|
 | Install command | `pnpm install --frozen-lockfile` |
-| **Build command** | `pnpm run cf-build` |
-| **Deploy command** | `pnpm run cf-upload` |
-| Root directory | `/` (repo root) |
+| **Build command** | `pnpm run build` |
+| **Deploy command** | `pnpm run cf-upload` (or `npx wrangler versions upload`) |
+| Root directory | `/` |
+| Branch | production branch only (usually `main`) — no preview branch builds required |
 
-- `cf-build` → `opennextjs-cloudflare build` (Next build **plus** OpenNext Worker bundle)
-- `cf-upload` → `wrangler versions upload` (uses local `wrangler` via pnpm; avoid `npx`)
+Plain `next build` alone will fail deploy with
+`entry-point file at ".open-next/worker.js" was not found` — use
+`build:next` only when you intentionally want a non-Worker Next build.
 
-Alternative one-shot (build+deploy in the deploy step): leave build empty / noop and
-set deploy to `pnpm run deploy`. Prefer the split table above when the UI has
-separate build and deploy fields.
-
-Optional build variable: `NEXT_PUBLIC_API_URL` (must be present at **build** time).
-
-### Pages
-
-If GitHub still shows a **Cloudflare Pages** check for project `website`:
-
-1. Disable automatic deployments on that Pages project (preferred — Pages is
-   not the OpenNext host), or
-2. Keep Pages disconnected so only Workers Builds deploys.
-
-Do not point classic Pages at this Next.js App Router app.
-
-## Local Next.js (not Workers)
-
-```bash
-pnpm install
-cp .env.example .env.local   # optional NEXT_PUBLIC_API_URL
-pnpm dev
-```
-
-`next.config.mjs` calls `initOpenNextCloudflareForDev()` so local Next can
-talk to Cloudflare bindings when you add them later.
+Do **not** use classic Cloudflare Pages for this App Router / OpenNext app.

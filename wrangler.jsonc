@@ -2,6 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   // Account: compscietybulsu — workers.dev subdomain is `cssbulsu`
   // Live URL: https://website.cssbulsu.workers.dev
+  // Full stack: OpenNext FE + app/api on this Worker, D1 (rows) + R2 (media)
   "account_id": "d8fdf8612e11f3aadb89085e8924cc41",
   "name": "website",
   "main": ".open-next/worker.js",
@@ -15,5 +16,19 @@
   },
   "observability": {
     "enabled": true
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "website-db",
+      "database_id": "7d6d5006-61b1-4011-84c3-200b61cf7185",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "website-media"
+    }
+  ]
 }

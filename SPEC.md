@@ -19,82 +19,75 @@ admin permissions.
 
 ## 2. Architecture and stack
 
-Two apps in one repo, deployed separately.
+One Cloudflare Worker hosts the site and API (OpenNext).
 
-**Frontend** — `/` (repo root)
+**App** — `/` (repo root)
 - Next.js 16 (App Router), React 19, Tailwind CSS v4
-- Package manager: **pnpm** (see `package.json`)
-- Client-side data fetching via `lib/api.js` against the backend REST API
-- Local admin session token stored in `localStorage` via `lib/auth.js`
-
-**Backend** — `/server`
-- Express 5, Mongoose 9 (MongoDB), JWT auth (`jsonwebtoken`), `bcryptjs` for
-  password hashing, Cloudinary for image storage, `dotenv` for config
 - Package manager: **pnpm**
-- Entry point: `server/server.js`, listens on `process.env.PORT` (default 5000)
-- Dev runner: `nodemon` via `pnpm dev` (script currently named `dev` in
-  `server/package.json`)
+- Client-side data fetching via `lib/api.js` (same-origin `/api` by default;
+  optional `NEXT_PUBLIC_API_URL` override for legacy Express)
+- Admin session token in `localStorage` via `lib/auth.js`
+- Deploy: Cloudflare Workers (`wrangler.jsonc`, name `website`)
+
+**API + storage** — `app/api/*` on the same Worker
+- **D1** (`website-db`): admins, blogs, partners (`migrations/`)
+- **R2** (`website-media`): images; public read via `GET /api/media/...`
+- Auth: `jose` JWT + `bcryptjs`; secret `JWT_SECRET` (Wrangler secret / `.dev.vars`)
+- Seed admin: `pnpm run seed:admin` / `seed:admin:local`
+
+**Legacy** — `/server` Express + Mongo + Cloudinary is not production hosting.
+Keep only for reference or one-off data export.
 
 **Containers** — if/when containerized, use **Podman**, not Docker.
 
 ## 3. API and data contracts
 
-Base path: all backend routes are mounted under `/api` on the Express app
-(`server/server.js`). The frontend reads the backend base URL from
-`NEXT_PUBLIC_API_URL` (see `lib/api.js`).
+Base path: `/api` on the Worker (Next route handlers). See `app/api/`.
 
 ### 3.1 Health
 
-`GET /api/health` → `{ "status": "ok" }`. No auth.
+`GET /api/health` → `{ "ok": true, "storage": "d1" }`. No auth.
 
-### 3.2 Auth — `server/routes/auth.js`
+### 3.2 Auth — `app/api/auth/login`
 
 `POST /api/auth/login`
 - Body: `{ "username": string, "password": string }`
 - 400 if either field missing
 - 401 if admin not found or password mismatch
-- 200: `{ "token": string, "username": string }` — JWT signed with
-  `JWT_SECRET`, `expiresIn: "7d"`, payload `{ id, username }`
+- 200: `{ "token": string, "username": string }` — JWT HS256 with
+  `JWT_SECRET`, expires in 7d, payload `{ id, username }`
 
-There is no register/refresh/logout endpoint. Admin accounts are created out
-of band via `server/scripts/createAdmin.js <username> <password>` (upserts
-into the `Admin` collection). Logout is client-only (token is dropped from
-`localStorage`).
+No register/refresh/logout. Admins via `scripts/seed-admin.mjs`. Logout is
+client-only (`localStorage`).
 
-### 3.3 Blogs — `server/routes/blogs.js`
-
-All routes mounted at `/api/blogs`.
+### 3.3 Blogs — `app/api/blogs`
 
 | Method | Path | Auth | Body | Response |
 |---|---|---|---|---|
-| GET | `/` | none | — | `200` array of Blog, sorted newest first |
-| GET | `/:id` | none | — | `200` Blog, `404` if not found, `400` if id invalid |
-| POST | `/` | `verifyAdmin` | `{ title, content, image?, fbLink? }` | `201` Blog, `400` if title/content missing |
-| PUT | `/:id` | `verifyAdmin` | `{ title, content, image?, fbLink? }` | `200` Blog, `404`/`400` |
-| DELETE | `/:id` | `verifyAdmin` | — | `200 { message }`, `404`/`400` |
+| GET | `/` | none | — | `200` array of Blog, newest first |
+| GET | `/:id` | none | — | `200` Blog, `404` if not found |
+| POST | `/` | Bearer JWT | `{ title, content, image?, fbLink? }` | `201` Blog |
+| PUT | `/:id` | Bearer JWT | same | `200` Blog, `404` |
+| DELETE | `/:id` | Bearer JWT | — | `200 { message }`, `404` |
 
-`verifyAdmin` middleware (`server/middleware/auth.js`) reads
-`Authorization: Bearer <token>`, verifies with `JWT_SECRET`, attaches
-`req.admin = { id, username }`, else `401`.
+### 3.4 Uploads — `app/api/uploads` + R2
 
-### 3.4 Uploads — `server/routes/uploads.js`
+`POST /api/uploads` — Bearer JWT. Multipart field `file` (image/*). Stores in
+R2; returns `{ url: "/api/media/...", key }`. Frontend: `lib/media.js`.
 
-`GET /api/uploads/signature` — `verifyAdmin` only. Returns a Cloudinary
-upload signature: `{ signature, timestamp, folder: "compsciety-blogs",
-apiKey, cloudName }`. The frontend (`lib/cloudinary.js`) posts the file
-directly to Cloudinary's REST API using this signature — the backend never
-receives the image bytes.
+`GET /api/media/[...key]` — public stream from R2.
 
 ### 3.5 Data models
 
-**Blog** (`server/models/Blog.js`)
+**Blog** (D1 `blogs`; JSON uses Mongo-compatible `_id`)
 ```js
 {
+  _id: String,     // UUID
   title: String,   // required, trimmed
   content: String, // required
-  image: String,   // default "" — Cloudinary secure_url
-  fbLink: String,  // default "" — optional Facebook post link
-  createdAt, updatedAt // timestamps: true
+  image: String,   // default "" — usually /api/media/...
+  fbLink: String,  // default ""
+  createdAt, updatedAt
 }
 ```
 
@@ -106,9 +99,20 @@ receives the image bytes.
 }
 ```
 
-There is no user/member model. There is no partners, officers, or
-announcements model yet — that content is hardcoded in frontend components
-(see gaps below).
+**Partner** (D1 `partners`)
+```js
+{
+  _id: String,
+  name: String,
+  detail: String,
+  image: String,   // usually /api/media/...
+  createdAt, updatedAt
+}
+```
+
+**Admin** (D1 `admins`): `{ id, username, password_hash }` — not exposed in
+list APIs. No public member model. Officers/announcements may still be
+hardcoded in frontend components (see gaps).
 
 ### 3.6 Frontend routes
 
@@ -155,10 +159,9 @@ These are real gaps in the shipped product, not proposals:
   `server/package-lock.json`) even though the project has moved to pnpm; a
   `pnpm-lock.yaml` exists locally but is untracked. README still documents
   `npm install`.
-- **No `.env.example` files** — env var names are not documented anywhere
-  in-repo.
-- **CORS defaults to `*`** if `CLIENT_URL` is unset (`server/server.js`),
-  which is fine for local dev but must not ship to production as-is.
+- **R2 must be enabled** once in the Cloudflare dashboard before
+  `website-media` can be created / production deploy binds MEDIA.
+- **Legacy `server/`** still in-tree; do not treat it as the production API.
 
 ## 5. Feature checklist
 
@@ -168,11 +171,12 @@ These are real gaps in the shipped product, not proposals:
 - [x] Public about page (mission/vision, advisers, officers, executives, committees)
 - [x] Public blog list + single post pages backed by the real API
 - [x] Admin login (JWT)
-- [x] Admin blog CRUD (create, edit, delete) with Cloudinary image upload
+- [x] Admin blog CRUD (create, edit, delete) with R2 image upload
 - [x] Health check endpoint for uptime monitoring
+- [x] Cloudflare full-stack host (Workers + D1 + R2; same-origin `/api`)
 - [ ] Contact page (route + content), or nav/footer links updated to not 404
-- [ ] `.env.example` (root and `server/`) documenting every required var
-- [ ] README accurate for pnpm, describes running both frontend and backend
+- [x] `.env.example` / `.dev.vars.example` documenting required vars
+- [x] README accurate for pnpm + Cloudflare deploy
 - [ ] Single lockfile strategy: commit `pnpm-lock.yaml`, remove tracked npm lockfiles
 - [ ] `AdminGuard` treats an expired/invalid token as logged-out, not just an absent one
 - [ ] Admin dashboard edit links resolve to a real, working edit route
@@ -184,9 +188,9 @@ These are real gaps in the shipped product, not proposals:
 - [ ] Real officer/executive/adviser/committee data and photos, ideally admin-editable
 - [ ] Announcements backed by an API (`Announcement` model + CRUD), replacing the hardcoded carousel
 - [ ] Basic smoke tests (API route tests + one frontend build/lint check) in CI
-- [ ] Admin auth hardening: rate limit login, rotate/shorten token lifetime or add refresh, audit `verifyAdmin` error messages for info leakage
+- [ ] Admin auth hardening: rate limit login, rotate/shorten token lifetime or add refresh, audit auth error messages for info leakage
 - [ ] Blog list pagination server-side (currently paginates a fully-fetched array client-side)
-- [ ] Deploy docs (env vars per environment, CORS/`CLIENT_URL` config, MongoDB Atlas + Cloudinary setup)
+- [x] Deploy docs for Workers + D1 + R2 (`docs/deploy.md`)
 - [ ] Custom 404 illustration (replace placeholder block)
 
 ### Future (nice-to-have — not required for a credible launch or V1)
