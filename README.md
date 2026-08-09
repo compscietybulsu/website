@@ -13,7 +13,9 @@ contracts, feature checklist, and known gaps).
 Package manager: **pnpm** only. Do not use `npm` or `yarn`.
 
 Deploy the public Next.js frontend to Cloudflare Workers (OpenNext): see
-[`docs/deploy.md`](./docs/deploy.md). Commands: `pnpm preview` / `pnpm run deploy`.
+[`docs/deploy.md`](./docs/deploy.md). Production:
+[https://website.cssbulsu.workers.dev](https://website.cssbulsu.workers.dev).
+Commands: `pnpm preview` / `pnpm run deploy`.
 
 ## Prerequisites
 

@@ -1,9 +1,14 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "compsciety-web",
+  // Account: compscietybulsu — workers.dev subdomain is `cssbulsu`
+  // Live URL: https://website.cssbulsu.workers.dev
+  "account_id": "d8fdf8612e11f3aadb89085e8924cc41",
+  "name": "website",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-06-05",
   "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": true,
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
