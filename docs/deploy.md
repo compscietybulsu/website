@@ -33,13 +33,13 @@ Builds. Never commit real values.
 |----------|----------|---------|
 | `NEXT_PUBLIC_API_URL` | No | Base URL of the Express API. Omit or leave empty to degrade gracefully (read-only shell without live blog/partners data). |
 
-For local Workers preview, you can put the same name in `.dev.vars` (gitignored)
-or rely on `.env.local` during `pnpm dev`. See OpenNext
+For local Workers preview, copy `.dev.vars.example` → `.dev.vars` (gitignored),
+or use `.env.local` during `pnpm dev`. See OpenNext
 [environment variables](https://opennext.js.org/cloudflare/howtos/env-vars).
 
 Backend secrets (`MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_*`, `CLIENT_URL`,
 etc.) belong only on the API host — see `server/.env.example`. Do not put them
-in Workers config.
+in Workers config or the repo-root frontend env files.
 
 ## Scripts
 

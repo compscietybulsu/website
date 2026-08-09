@@ -24,25 +24,29 @@ Deploy the public Next.js frontend to Cloudflare Workers (OpenNext): see
 
 ## Setup
 
+Env files are split on purpose (do not put API secrets in the Next.js root):
+
+| File | App | Template |
+|------|-----|----------|
+| `.env.local` | Next.js frontend | `.env.example` |
+| `server/.env` | Express API | `server/.env.example` |
+| `.dev.vars` | Local Workers preview | `.dev.vars.example` |
+
 Frontend (repo root):
 
 ```bash
 pnpm install
 cp .env.example .env.local
-# fill in NEXT_PUBLIC_API_URL in .env.local
+# set NEXT_PUBLIC_API_URL (e.g. http://localhost:5000)
 ```
 
 Backend (`server/`):
 
 ```bash
+cd server
 pnpm install
-pnpm dev
-```
-
-API (separate package under `server/`):
-
-```bash
-cd server && pnpm install && pnpm dev
+cp .env.example .env
+# set MONGODB_URI, JWT_SECRET, CLOUDINARY_*, CLIENT_URL, PORT
 ```
 
 ## Codespaces / Dev Containers

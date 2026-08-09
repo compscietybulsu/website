@@ -41,6 +41,7 @@ yarn-error.log*
 .env*
 !.env.example
 !server/.env.example
+!.dev.vars.example
 
 # vercel
 .vercel

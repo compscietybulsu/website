@@ -1,0 +1,9 @@
+# Wrangler / OpenNext local Workers preview secrets (repo root).
+# Copy:  cp .dev.vars.example .dev.vars
+# Names only — never commit real values. .dev.vars and .dev.vars.* are gitignored.
+#
+# NEXT_PUBLIC_* must still be present at OpenNext *build* time for production
+# deploys (Workers Build variables or `export` before `pnpm run deploy`).
+# This file is for local `pnpm preview` / wrangler dev.
+
+NEXT_PUBLIC_API_URL=http://localhost:5000
