@@ -95,22 +95,41 @@ howto linked above.
 
 This repo’s production path is **Workers Builds → Worker `website`**.
 
-Recommended Workers Builds settings (same Cloudflare account as cssbulsu):
+### Workers Builds dashboard (required)
 
-- Install command: `pnpm install --frozen-lockfile`
-- Build/deploy command: `pnpm run deploy`
-- Root directory: `/` (repo root)
-- Configure `NEXT_PUBLIC_API_URL` under build variables when the API exists
+`pnpm run build` is **only** `next build`. It does **not** produce
+`.open-next/worker.js`. If the deploy step is `wrangler versions upload` /
+`wrangler deploy` after a plain Next build, you get:
 
-If GitHub still shows a **Cloudflare Pages** check for project `website` on a
-*different* account, either:
+`ERROR The entry-point file at ".open-next/worker.js" was not found.`
+
+Set the Workers Builds project to:
+
+| Setting | Value |
+|---------|--------|
+| Install command | `pnpm install --frozen-lockfile` |
+| **Build command** | `pnpm run cf-build` |
+| **Deploy command** | `pnpm run cf-upload` |
+| Root directory | `/` (repo root) |
+
+- `cf-build` → `opennextjs-cloudflare build` (Next build **plus** OpenNext Worker bundle)
+- `cf-upload` → `wrangler versions upload` (uses local `wrangler` via pnpm; avoid `npx`)
+
+Alternative one-shot (build+deploy in the deploy step): leave build empty / noop and
+set deploy to `pnpm run deploy`. Prefer the split table above when the UI has
+separate build and deploy fields.
+
+Optional build variable: `NEXT_PUBLIC_API_URL` (must be present at **build** time).
+
+### Pages
+
+If GitHub still shows a **Cloudflare Pages** check for project `website`:
 
 1. Disable automatic deployments on that Pages project (preferred — Pages is
    not the OpenNext host), or
-2. Move the Git integration to the **compscietybulsu** account and keep Pages
-   disconnected so only Workers Builds deploys.
+2. Keep Pages disconnected so only Workers Builds deploys.
 
-Do not point classic Pages build output at this Next.js App Router app.
+Do not point classic Pages at this Next.js App Router app.
 
 ## Local Next.js (not Workers)
 
