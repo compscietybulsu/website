@@ -1,9 +1,14 @@
+import path from "path";
+import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import Admin from "../models/Admin.js";
 
-dotenv.config();
+// Always load server/.env next to package.json.
+dotenv.config({
+  path: path.join(path.dirname(fileURLToPath(import.meta.url)), "..", ".env"),
+});
 
 const [, , username, password] = process.argv;
 

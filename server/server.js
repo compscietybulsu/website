@@ -1,3 +1,5 @@
+import path from "path";
+import { fileURLToPath } from "url";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -7,9 +9,10 @@ import blogRoutes from "./routes/blogs.js";
 import uploadRoutes from "./routes/uploads.js";
 import partnerRoutes from "./routes/partners.js";
 
-
-
-dotenv.config();
+// Always load server/.env (not cwd / not repo-root .env).
+dotenv.config({
+  path: path.join(path.dirname(fileURLToPath(import.meta.url)), ".env"),
+});
 
 const app = express();
 
