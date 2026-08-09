@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { api } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import ImageUploader from "./ImageUploader";
@@ -61,13 +62,21 @@ export default function PartnerForm({ initialData, partnerId }) {
 
       {error && <p className="text-red-400 text-sm">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={saving}
-        className="rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-8 py-3 shadow-lg hover:opacity-90 transition-opacity disabled:opacity-50"
-      >
-        {saving ? "Saving..." : partnerId ? "Update Partner" : "Add Partner"}
-      </button>
+      <div className="flex items-center gap-5">
+        <button
+          type="submit"
+          disabled={saving}
+          className="rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-8 py-3 shadow-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+        >
+          {saving ? "Saving..." : partnerId ? "Update Partner" : "Add Partner"}
+        </button>
+        <Link
+          href="/admin/partners"
+          className="text-green-300 text-sm font-heading font-semibold hover:text-white transition-colors"
+        >
+          Cancel
+        </Link>
+      </div>
     </form>
   );
 }
