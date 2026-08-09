@@ -19,6 +19,9 @@ export async function POST(request) {
       { status: 400 }
     );
   }
+  if (bcrypt.truncates(password)) {
+    return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
+  }
 
   const admin = await findAdminByUsername(username);
   if (!admin) {

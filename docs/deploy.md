@@ -110,7 +110,7 @@ Workers → `website` → Settings → Builds:
 | Setting | Wrong value (causes the error) |
 |---------|--------------------------------|
 | Build | `pnpm run build` → only `next build`, no `.open-next/` |
-| Deploy | `npx wrangler versions upload` → looks for missing `worker.js` |
+| Deploy | Wrangler upload without an OpenNext build → looks for missing `worker.js` |
 
 After you change the dashboard, **Retry** the build (or push to `main`).
 Updating settings does not rewrite old failed logs.

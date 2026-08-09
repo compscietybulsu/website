@@ -155,10 +155,8 @@ These are real gaps in the shipped product, not proposals:
   `/admin/blogs/new/:id/edit`). Verify this route actually resolves before
   treating it as fixed.
 - **No automated tests** anywhere in the repo.
-- **npm lockfiles are still tracked** (`package-lock.json`,
-  `server/package-lock.json`) even though the project has moved to pnpm; a
-  `pnpm-lock.yaml` exists locally but is untracked. README still documents
-  `npm install`.
+- **`server/pnpm-lock.yaml` is not tracked** while root `pnpm-lock.yaml` is;
+  legacy `server/` lockfile strategy may need alignment if that stack is kept.
 - **R2 must be enabled** once in the Cloudflare dashboard before
   `website-media` can be created / production deploy binds MEDIA.
 - **Legacy `server/`** still in-tree; do not treat it as the production API.
@@ -177,7 +175,7 @@ These are real gaps in the shipped product, not proposals:
 - [ ] Contact page (route + content), or nav/footer links updated to not 404
 - [x] `.env.example` / `.dev.vars.example` documenting required vars
 - [x] README accurate for pnpm + Cloudflare deploy
-- [ ] Single lockfile strategy: commit `pnpm-lock.yaml`, remove tracked npm lockfiles
+- [x] Single lockfile strategy: commit `pnpm-lock.yaml`, remove tracked npm lockfiles
 - [ ] `AdminGuard` treats an expired/invalid token as logged-out, not just an absent one
 - [ ] Admin dashboard edit links resolve to a real, working edit route
 
@@ -188,7 +186,10 @@ These are real gaps in the shipped product, not proposals:
 - [ ] Real officer/executive/adviser/committee data and photos, ideally admin-editable
 - [ ] Announcements backed by an API (`Announcement` model + CRUD), replacing the hardcoded carousel
 - [ ] Basic smoke tests (API route tests + one frontend build/lint check) in CI
-- [ ] Admin auth hardening: rate limit login, rotate/shorten token lifetime or add refresh, audit auth error messages for info leakage
+- [ ] Admin auth hardening: HttpOnly/Secure/SameSite session cookie (replace
+  `localStorage` JWT), CSRF on state-changing routes, rate limit login,
+  rotate/shorten token lifetime or add refresh, audit auth error messages for
+  info leakage
 - [ ] Blog list pagination server-side (currently paginates a fully-fetched array client-side)
 - [x] Deploy docs for Workers + D1 + R2 (`docs/deploy.md`)
 - [ ] Custom 404 illustration (replace placeholder block)

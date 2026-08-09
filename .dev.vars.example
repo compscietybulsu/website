@@ -3,7 +3,7 @@
 # Names only — never commit real values. .dev.vars and .dev.vars.* are gitignored.
 
 # Required for admin login and protected /api routes in `pnpm preview`.
-JWT_SECRET=change-me-to-a-long-random-string
+JWT_SECRET=
 
 # Used by `pnpm run seed:admin` / `seed:admin:local` (names only here).
 # Put real values only in gitignored `.dev.vars` — never commit passwords.

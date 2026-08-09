@@ -56,6 +56,10 @@ if (password.length < 8) {
   console.error("ADMIN_PASS must be at least 8 characters.");
   process.exit(1);
 }
+if (bcrypt.truncates(password)) {
+  console.error("ADMIN_PASS exceeds bcrypt's 72-byte limit.");
+  process.exit(1);
+}
 
 const id = randomUUID();
 const hash = bcrypt.hashSync(password, 10);
