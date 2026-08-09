@@ -12,6 +12,9 @@ contracts, feature checklist, and known gaps).
 
 Package manager: **pnpm** only. Do not use `npm` or `yarn`.
 
+Deploy the public Next.js frontend to Cloudflare Workers (OpenNext): see
+[`docs/deploy.md`](./docs/deploy.md). Commands: `pnpm preview` / `pnpm run deploy`.
+
 ## Prerequisites
 
 - Node.js 20+
@@ -130,8 +133,9 @@ pnpm dev
 ```
 
 The frontend expects the backend reachable at `NEXT_PUBLIC_API_URL`
-(defaults to nothing — you must set it in `.env.local`, e.g.
-`http://localhost:5000`).
+(optional — omit it to ship the site shell without live API data; see
+[`docs/deploy.md`](./docs/deploy.md)). Example for local API:
+`http://localhost:5000` in `.env.local`.
 
 ## Creating an admin account
 
