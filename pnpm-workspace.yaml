@@ -1,3 +1,6 @@
-allowBuilds:
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
+# Single-package workspace so Cloudflare Workers Builds (pnpm 10.11.1)
+# accepts the manifest. Without `packages`, that pnpm version fails with
+# "packages field missing or empty". Do not add server/ here unless we
+# adopt a real monorepo (see issue #21).
+packages:
+  - "."
