@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import AdminGuard from "@/components/admin/AdminGuard";
+import AdminNav from "@/components/admin/AdminNav";
 import BlogForm from "@/components/admin/BlogForm";
 import { api } from "@/lib/api";
 
@@ -29,6 +31,13 @@ export default function EditBlogPage() {
     <AdminGuard>
       <div className="min-h-screen bg-gradient-to-b from-[#020806] via-[#0a2818] to-[#0d3320] px-4 sm:px-8 py-10">
         <div className="mx-auto max-w-2xl">
+          <AdminNav />
+          <Link
+            href="/admin/dashboard"
+            className="inline-block text-green-400 text-sm hover:text-green-300 transition-colors mb-4"
+          >
+            ← Back to Blogs
+          </Link>
           <h1 className="font-heading font-extrabold text-white text-3xl mb-8">Edit Blog Post</h1>
           <EditBlogContent />
         </div>

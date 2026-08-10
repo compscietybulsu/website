@@ -11,6 +11,9 @@ package-lock.json
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+/.pnpm-store/v10
+.pnpm-store/
+.devcontainer
 
 # testing
 /coverage
