@@ -2,152 +2,68 @@
 
 Official website for the Computer Science Society (CompSciety, BulSU).
 
-Two apps in this repo:
-- **Frontend** (repo root) — Next.js 16 (App Router), React 19, Tailwind CSS v4
-- **Backend** (`server/`) — Express 5, Mongoose (MongoDB), JWT admin auth, Cloudinary image uploads
+**Production hosting is all on Cloudflare** (one Worker):
 
-Read [`AGENTS.md`](./AGENTS.md) for repo guardrails and
-[`SPEC.md`](./SPEC.md) for the full product contract (architecture, API
-contracts, feature checklist, and known gaps).
+| Piece | Cloudflare product |
+|-------|--------------------|
+| Next.js site + `/api/*` | Workers (OpenNext) |
+| blogs / partners / admins | D1 (`website-db`) |
+| Admin image uploads | R2 (`website-media`) via `/api/uploads` + `/api/media/...` |
 
-Package manager: **pnpm** only. Do not use `npm` or `yarn`.
+Live: [https://website.cssbulsu.workers.dev](https://website.cssbulsu.workers.dev).
 
-Deploy the public Next.js frontend to Cloudflare Workers (OpenNext): see
-[`docs/deploy.md`](./docs/deploy.md). Commands: `pnpm preview` / `pnpm run deploy`.
+`server/` (Express + Mongo + Cloudinary) is **legacy** — local reference only.
+See [`docs/deploy.md`](./docs/deploy.md), [`AGENTS.md`](./AGENTS.md), and
+[`SPEC.md`](./SPEC.md).
+
+Package manager: **pnpm** only.
 
 ## Prerequisites
 
 - Node.js 20+
 - [pnpm](https://pnpm.io/installation)
-- A MongoDB connection string (e.g. [MongoDB Atlas](https://www.mongodb.com/atlas)) when running the API
-- A [Cloudinary](https://cloudinary.com/) account (for admin blog image uploads)
+- Cloudflare account with Wrangler (`pnpm exec wrangler whoami`)
+- R2 enabled on the account (first-time dashboard toggle)
 
 ## Setup
 
-Frontend (repo root):
+| File | Purpose | Template |
+|------|---------|----------|
+| `.env.local` | Optional Next local overrides | `.env.example` |
+| `.dev.vars` | Local Workers preview secrets (`JWT_SECRET`) | `.dev.vars.example` |
 
 ```bash
 pnpm install
-cp .env.example .env.local
-# set NEXT_PUBLIC_API_URL (e.g. http://localhost:5000)
+cp .dev.vars.example .dev.vars   # set JWT_SECRET, ADMIN_USER, ADMIN_PASS
+pnpm run db:migrate:local
+pnpm run seed:admin:local        # reads ADMIN_* from .dev.vars
 ```
 
-Backend (`server/`):
+## Local development
+
+Same-origin API (recommended):
 
 ```bash
-cd server
-pnpm install
-cp .env.example .env
-# set MONGODB_URI, JWT_SECRET, CLOUDINARY_*, etc.
+pnpm preview    # OpenNext + Workers runtime with D1/R2 bindings
 ```
 
-See `.env.example` and `server/.env.example` for the full list of required
-variables — no real values are committed anywhere in this repo.
-
-## Codespaces / Dev Containers
-
-Use this path when you do not have a fully provisioned local machine.
-
-This repo includes [`.devcontainer/`](.devcontainer/) (Node 22, pnpm 10, act).
-Features come from [`compscietybulsu/devcontainer`](https://github.com/compscietybulsu/devcontainer);
-the org sandbox is [`compscietybulsu/codespace`](https://github.com/compscietybulsu/codespace).
-
-**Open:** GitHub → Code → Codespaces → Create codespace, or VS Code / Cursor
-**Dev Containers: Reopen in Container**. `postCreate` runs
-`pnpm install --frozen-lockfile` at the repo root and in `server/`.
-No secrets are baked into the image.
-
-### Env copy (after create)
-
-```bash
-cp .env.example .env.local
-# NEXT_PUBLIC_API_URL=http://localhost:5000 for local dev or desktop Codespaces
-# Browser Codespaces: set NEXT_PUBLIC_API_URL to the forwarded port-5000 URL
-#   from the Ports tab (e.g. https://<codespace-name>-5000.app.github.dev)
-
-cp server/.env.example server/.env
-# For API work: MONGODB_URI (Atlas), JWT_SECRET, CLOUDINARY_*
-```
-
-Names only in the examples — fill real values locally; never commit them.
-
-### Ports
-
-| Port | Command | Purpose |
-|---|---|---|
-| **3000** | `pnpm dev` (repo root) | Next.js frontend |
-| **5000** | `cd server && pnpm dev` | Express API |
-
-Both ports are forwarded and labeled in `devcontainer.json`.
-
-### Run both apps
-
-Two terminals:
-
-```bash
-# terminal 1 — API
-cd server && pnpm dev
-
-# terminal 2 — frontend (repo root)
-pnpm dev
-```
-
-### Frontend-only (no Mongo)
-
-You can work on the Next.js UI without MongoDB or Express. Skip `server/.env`
-and do not start the API. Pages that do not call the backend will load; API-backed
-pages fail until `NEXT_PUBLIC_API_URL` points at a running server.
-
-### API + MongoDB Atlas
-
-For admin/blog API work, create a free [MongoDB Atlas](https://www.mongodb.com/atlas)
-cluster and set `MONGODB_URI` in `server/.env`, plus `JWT_SECRET` and Cloudinary
-vars as needed. A local Podman Mongo compose stack is out of scope for this path.
-
-### pnpm only
-
-Use **pnpm** exclusively. Root and `server/` each have a `pnpm-lock.yaml`.
-Do not introduce `package-lock.json` workflows or `npm`/`yarn` install steps.
-
-### Podman locally vs docker-in-docker in Dev Containers
-
-This project's ordinary local development convention is **Podman-first** (see
-`AGENTS.md`). The checked-in `.devcontainer/devcontainer.json` — used by GitHub
-Codespaces and by VS Code / Cursor **Dev Containers: Reopen in Container** —
-unconditionally enables Microsoft's **docker-in-docker** feature because that is
-what Codespaces and the Dev Containers spec support today. Prefer Podman on your
-laptop for non-Dev-Container workflows; use the DinD path only when reopening in
-the checked-in Dev Container. Do not bake secrets into either image.
-
-## Running locally
-
-Run both dev servers in separate terminals.
-
-Backend:
-
-```bash
-cd server
-pnpm dev
-```
-
-Frontend (from repo root):
+Or plain Next (bindings via `initOpenNextCloudflareForDev` in `next.config.mjs`):
 
 ```bash
 pnpm dev
 ```
 
-The frontend expects the backend reachable at `NEXT_PUBLIC_API_URL`
-(optional — omit it to ship the site shell without live API data; see
-[`docs/deploy.md`](./docs/deploy.md)). Example for local API:
-`http://localhost:5000` in `.env.local`.
+Leave `NEXT_PUBLIC_API_URL` unset so the browser calls `/api` on the same origin.
 
-## Creating an admin account
-
-Admin accounts are not self-service. Create one from the backend:
+## Production deploy
 
 ```bash
-cd server
-node scripts/createAdmin.js <username> <password>
+pnpm exec wrangler r2 bucket create website-media   # once, after enabling R2
+pnpm run db:migrate
+pnpm exec wrangler secret put JWT_SECRET
+# Put ADMIN_USER / ADMIN_PASS in gitignored `.dev.vars`, then:
+pnpm run seed:admin
+pnpm run deploy
 ```
 
 Then log in at `/admin`.

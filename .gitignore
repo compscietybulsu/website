@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+package-lock.json
+**/package-lock.json
 /.pnp
 .pnp.*
 .yarn/*
@@ -9,6 +11,9 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+/.pnpm-store/v10
+.pnpm-store/
+.devcontainer
 
 # testing
 /coverage
@@ -41,6 +46,7 @@ yarn-error.log*
 .env*
 !.env.example
 !server/.env.example
+!.dev.vars.example
 
 # vercel
 .vercel
