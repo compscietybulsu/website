@@ -32,16 +32,39 @@ reference / migration only). Do not deploy it for production.
 
 ## Secrets and env
 
-| Name | Where | Purpose |
-|------|--------|---------|
-| `JWT_SECRET` | `wrangler secret put JWT_SECRET` (prod); `.dev.vars` (local preview) | Admin JWT sign/verify |
-| `NEXT_PUBLIC_API_URL` | Usually **omit** | Same-origin `/api` by default. Only set if pointing at a legacy Express host. |
+All env vars, by environment. Templates (names only): `.env.example`,
+`.dev.vars.example`, `server/.env.example`. Never commit real values.
 
-Never commit real values. Templates: `.env.example`, `.dev.vars.example`.
+| Name | Local Next (`pnpm dev`) | Local Workers (`pnpm preview`) | Production (Workers) | Purpose |
+|------|--------------------------|--------------------------------|----------------------|---------|
+| `JWT_SECRET` | `.env.local` | `.dev.vars` | `wrangler secret put JWT_SECRET` | Admin JWT sign/verify (long random value in prod) |
+| `ADMIN_USER` | — | `.dev.vars` | `.dev.vars` (gitignored, for `pnpm run seed:admin`) | Seed admin username |
+| `ADMIN_PASS` | — | `.dev.vars` | `.dev.vars` (gitignored) | Seed admin password — never on the shell command line |
+| `NEXT_PUBLIC_API_URL` | `.env.local` (usually **omit**) | usually **omit** | usually **omit** | Same-origin `/api` by default; only set to point at a legacy Express host |
+
+`.env.local` is optional Next-local overrides (frontend only). `.dev.vars` is
+the Workers preview/prod-build secrets file (gitignored). Production secrets
+that must not ship in the Worker bundle — `JWT_SECRET` — go through
+`wrangler secret put`:
 
 ```bash
 pnpm exec wrangler secret put JWT_SECRET
 ```
+
+### Legacy server (`server/`) env
+
+The Express + Mongo + Cloudinary stack is not deployed. If you run it locally
+for reference, its vars live in `server/.env` (see `server/.env.example`):
+`PORT`, `CLIENT_URL`, `MONGODB_URI`, `JWT_SECRET`, and the three
+`CLOUDINARY_*` names.
+
+### CORS / `CLIENT_URL`
+
+The Cloudflare Worker serves the API on the **same origin** as the site
+(`/api/*`), so no CORS configuration applies in production. The legacy Express
+server is the only place `CLIENT_URL` matters (`server/server.js`): set it to
+the real origin you run that server for; `*` is dev-only and must never be
+used in production.
 
 ## One-time: migrations, R2, admin
 
