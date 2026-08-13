@@ -22,84 +22,87 @@ Conventions:
 
 Do these before any V1 work. T002–T004 are parallel-safe (disjoint files).
 
-- [ ] **T002** Create `/contact` page (or, if content isn't ready yet,
-  remove the `/contact` links from Navbar/Footer as an interim fix).
-  Files: `app/contact/page.js` (new), `components/Navbar.jsx`,
-  `components/Footer.jsx`.
+- [x] **T002** Contact 404 resolved via **unlink**: Nav/Footer "Contact"
+  links now anchor to `#site-footer` (has a "Contact Us" block); no dead
+  links remain. GitHub issue #10 closed. A standalone `/contact` route can
+  return as content work.
+  Files: `components/Navbar.jsx`, `components/Footer.jsx`.
   Depends on: none.
 
-- [ ] **T003** Add `.env.example` (root) and `server/.env.example` with
-  every var name currently read via `process.env.*`, no real values.
+- [x] **T003** `.env.example` (root) and `server/.env.example` list every
+  var name read via `process.env.*`, no real values. Re-verified 2026-08-13
+  against `server/**`, `lib/**`, `app/**`, and `scripts/` — all 7 server vars
+  plus `NEXT_PUBLIC_API_URL` are covered. Keep in sync as new env vars are
+  added.
   Files: `.env.example`, `server/.env.example`.
-  Depends on: none. *(Done as part of T001 in this PR — verify it stays in
-  sync as new env vars are added.)*
+  Depends on: none. *(Originally done as part of T001; verification landed
+  with the codebase-centralize work.)*
 
-- [ ] **T004** Rewrite `README.md` for pnpm: install steps for root and
-  `server/`, how to run both dev servers, links to `SPEC.md` and
-  `AGENTS.md`.
+- [x] **T004** `README.md` rewritten for pnpm + the Cloudflare stack
+  (Workers/D1/R2), with a Workspace section and links to `SPEC.md` and
+  `AGENTS.md`. No `npm` commands remain. GitHub issue #4 closed.
   Files: `README.md`.
-  Depends on: none. *(Done as part of T001 in this PR.)*
+  Depends on: none. *(Done as part of T001 + centralize work.)*
 
-- [ ] **T005** Commit `pnpm-lock.yaml` (root and `server/`), remove tracked
-  `package-lock.json` and `server/package-lock.json`, add a root
-  `pnpm-workspace.yaml` if root and `server/` should be one workspace
-  (decide and document the choice in `AGENTS.md`/`SPEC.md`).
-  Files: `pnpm-lock.yaml`, `server/pnpm-lock.yaml`, remove
-  `package-lock.json`, `server/package-lock.json`.
-  Depends on: T004 (README should already say pnpm before lockfile switch
-  lands, to avoid a window of contradictory docs).
+- [x] **T005** Lockfile cleanup: `pnpm-lock.yaml` committed at root and in
+  `server/`; `package-lock.json` and `server/package-lock.json` removed from
+  git; `.gitignore` keeps `**/package-lock.json` ignored. Decision recorded in
+  `SPEC.md` §2 (single-package workspace; `server/` independent). Issue #7 and
+  #21 closed.
+  Files: `pnpm-lock.yaml`, `server/pnpm-lock.yaml`, `pnpm-workspace.yaml`,
+  `SPEC.md`, `README.md`.
+  Depends on: T004.
 
 - [ ] **T006** Harden `AdminGuard` to treat expired/invalid tokens as
   logged-out: decode `exp` client-side (or catch a 401 from the first API
   call) and redirect + clear the stored token.
   Files: `components/admin/AdminGuard.jsx`, `lib/auth.js`.
-  Depends on: none.
+  Depends on: none. **In-flight** — issue #16, branch
+  `fix/frontend-issues` (worker B); SPEC §3.7 records the contract.
 
-- [ ] **T007** Fix the admin blog edit route so the dashboard's
-  `/admin/blogs/:id/edit` links actually resolve. Either move
-  `app/admin/blogs/new/[id]/edit/page.js` to `app/admin/blogs/[id]/edit/page.js`,
-  or update the dashboard links to match the real path — pick one and make
-  them consistent.
-  Files: `app/admin/dashboard/page.js`,
-  `app/admin/blogs/new/[id]/edit/page.js` (possibly moved).
+- [x] **T007** Fix the admin blog edit route so the dashboard's
+  `/admin/blogs/:id/edit` links actually resolve. Resolved by moving the page
+  to `app/admin/blogs/[id]/edit/page.js`; dashboard links and file path now
+  agree. GitHub issue #17 closed.
+  Files: `app/admin/blogs/[id]/edit/page.js`, `app/admin/dashboard/page.js`.
   Depends on: none.
 
 ## Phase 2 — V1 (trustworthiness and maintainability)
 
 Do after Phase 1 is checked off. T008–T011 are parallel-safe.
 
-- [ ] **T008** Replace placeholder hero copy/imagery with real content.
+- [x] **T008** Replace placeholder hero copy/imagery with real content. Hero
+  copy is real ("This is the official Computer Science Society webpage.");
+  imagery stays MatrixRain/GridFloor per the brand language. Issue #11 closed.
   Files: `components/Hero.jsx`.
   Depends on: content from org (non-code blocker — track in
   `docs/tickets.md`).
 
-- [ ] **T009** Replace placeholder partner circles with real logos (static
-  assets is fine for V1; backend-driven is Future work unless content owner
-  wants it sooner).
-  Files: `components/PartnersSection.jsx`, `public/`.
+- [x] **T009** Replace placeholder partner circles with real logos.
+  `PartnersSection.jsx` now fetches `GET /api/partners` (D1). Issue #13 closed.
+  Files: `components/PartnersSection.jsx`, `app/api/partners/**`.
   Depends on: content from org.
 
 - [ ] **T010** Replace hardcoded officer/executive/adviser/committee data
-  with real names/photos. Decide now whether this stays a static
-  content file (fastest) or becomes admin-editable (bigger, push to
-  Future unless explicitly requested).
+  with real names/photos. Decision recorded: static content file
+  (`lib/aboutContent.js`) for V1; admin-editable is Future.
   Files: `components/about/*.jsx`, `lib/aboutContent.js`.
-  Depends on: content from org.
+  Depends on: content from org. **In-flight** — issue #12, branch
+  `feat/about-content` (worker D); SPEC §3.7 records the contract.
 
 - [ ] **T011** Add `Announcement` model + CRUD API (mirror the Blog CRUD
-  pattern) and wire `AnnouncementCarousel.jsx` to it, replacing the
-  hardcoded `CARDS` array.
-  Files: `server/models/Announcement.js` (new),
-  `server/routes/announcements.js` (new), `server/server.js`,
-  `components/AnnouncementCarousel.jsx`, `lib/api.js` (if a helper is
-  added).
-  Depends on: T005 (avoid adding new backend surface area on top of an
-  unresolved lockfile split) — soft dependency, can be reordered if needed.
+  pattern) and wire `AnnouncementCarousel.jsx` to it, replacing the `/api/blogs`
+  stand-in.
+  Files: `app/api/announcements/**` (new), `migrations/**`, `lib/db.js`,
+  `components/AnnouncementCarousel.jsx`, `app/admin/announcements/**`.
+  Depends on: T005. **In-flight** — issue #14, branch
+  `feat/announcements-pagination` (worker C); SPEC §3.7 records the contract.
 
-- [ ] **T012** Admin auth hardening: rate-limit `/api/auth/login`
-  (e.g. `express-rate-limit`), review token lifetime (`7d` is long for a
-  bearer token with no refresh/revoke), review error messages in
-  `verifyAdmin`/`auth.js` for info leakage.
+- [x] **T012** Legacy-server auth hardening: `/api/auth/login` on the
+  Express server is now rate-limited (`express-rate-limit`); Workers-API login
+  returns a uniform "Invalid credentials" message. GitHub issue #15 closed.
+  NOTE: the Worker API still uses a 7d `localStorage` JWT with no rate limit —
+  that hardening remains tracked under SPEC §5 V1.
   Files: `server/routes/auth.js`, `server/middleware/auth.js`,
   `server/server.js`.
   Depends on: none.
@@ -107,26 +110,31 @@ Do after Phase 1 is checked off. T008–T011 are parallel-safe.
 - [ ] **T013** Move blog list pagination server-side
   (`GET /api/blogs?page=&limit=`) instead of fetching the full collection
   and paginating client-side.
-  Files: `server/routes/blogs.js`, `app/blog/page.js`,
+  Files: `app/api/blogs/route.js`, `app/blog/page.js`,
   `app/admin/dashboard/page.js`.
-  Depends on: none.
+  Depends on: none. **In-flight** — issue #18, branch
+  `feat/announcements-pagination` (worker C); SPEC §3.7 records the contract.
 
-- [ ] **T014** Add CI smoke tests: a workflow that runs `pnpm build`
-  (frontend) and a minimal backend route test (e.g. health check +
-  blog list) on every PR.
-  Files: `.github/workflows/ci.yml` (new), `server/` test setup (new).
-  Depends on: T005 (CI should install with the same package manager the
-  repo has standardized on).
+- [x] **T014** CI smoke checks: `.github/workflows/ci.yml` runs `pnpm lint` +
+  `pnpm build` (frontend) and `node --check server.js` (server) on every PR,
+  installing with pnpm. GitHub issue #8 closed. API route tests are a
+  follow-up (no test framework installed).
+  Files: `.github/workflows/ci.yml`.
+  Depends on: T005.
 
-- [ ] **T015** Write deploy docs: required env vars per environment,
-  `CLIENT_URL`/CORS configuration, MongoDB Atlas + Cloudinary setup steps.
-  Files: `docs/deploy.md` (new), link from `README.md`.
+- [x] **T015** Deploy docs for the Workers + D1 + R2 stack: env vars per
+  environment (`.env.local` / `.dev.vars` / Wrangler secrets), CORS and
+  `CLIENT_URL` guidance, one-time R2/D1/seed steps. Linked from `README.md`.
+  Issue #19 closed via this work (original Mongo/Cloudinary acceptance
+  criteria are obsolete — superseded by the Workers migration).
+  Files: `docs/deploy.md`, `README.md`.
   Depends on: T003.
 
 - [ ] **T016** Replace the 404 page's placeholder illustration block with a
   real graphic.
   Files: `app/not-found.js`.
-  Depends on: none.
+  Depends on: none. **In-flight** — issue #20, branch `fix/frontend-issues`
+  (worker B).
 
 ## Phase 3 — Future (only after MVP + V1 are done, or on explicit request)
 

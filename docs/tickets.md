@@ -8,6 +8,32 @@ that isn't already listed.
 Cross-reference: `SPEC.md` for the contract, `tasks.md` for execution order
 (`T0xx` IDs below match `tasks.md`).
 
+## Issue status map (2026-08-13)
+
+Snapshot of GitHub state vs the codebase. Do not edit GitHub issue bodies —
+PRs close them. Ticket sections below keep their original (GitHub) text.
+
+| Ticket | GitHub issue | Status | Where |
+|---|---|---|---|
+| 1. Agent scaffolding | #5 | CLOSED | merged |
+| 2. Contact 404 | #10 | CLOSED | Contact links anchor to `#site-footer` |
+| 3. Hero copy | #11 | CLOSED | real copy in `components/Hero.jsx` |
+| 4. `.env.example` | #3 | CLOSED | root + `server/.env.example` |
+| 5. Lockfile | #7 | **CLOSED by this work** | `server/package-lock.json` removed; pnpm lockfiles tracked |
+| 6. Officers content | #12 | OPEN — in-flight | branch `feat/about-content` (worker D); SPEC §3.7 |
+| 7. Partners | #13 | CLOSED | `GET /api/partners` |
+| 8. Announcements | #14 | OPEN — in-flight | branch `feat/announcements-pagination` (worker C); SPEC §3.7. Carousel currently uses `/api/blogs` stand-in |
+| 9. Auth hardening | #15 | CLOSED | legacy server rate-limited; Workers API hardening still open (SPEC §5 V1) |
+| 10. AdminGuard | #16 | OPEN — in-flight | branch `fix/frontend-issues` (worker B); SPEC §3.7 |
+| 11. Edit route | #17 | CLOSED | route moved to `app/admin/blogs/[id]/edit/page.js` |
+| 12. Blog pagination | #18 | OPEN — in-flight | branch `feat/announcements-pagination` (worker C); SPEC §3.7 |
+| 13. README | #4 | CLOSED | pnpm + Cloudflare stack |
+| 14. CI smoke | #8 | CLOSED | `.github/workflows/ci.yml` |
+| 15. Deploy docs | #19 | **CLOSED by this work** | `docs/deploy.md` rewritten for Workers+D1+R2 |
+| 16. 404 illustration | #20 | OPEN — in-flight | branch `fix/frontend-issues` (worker B) |
+| 17. Workspace | #21 | **CLOSED by this work** | single-package workspace; recorded SPEC §2 |
+| 18. Podman | #22 | OPEN — Future | recorded SPEC §5 Future; tooling not built |
+
 ---
 
 ## 1. Agent scaffolding landed (meta)
