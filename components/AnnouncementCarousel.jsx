@@ -77,7 +77,7 @@ export default function AnnouncementCarousel() {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               )}
-              <div className="absolute inset-0 bg-black/55 group-hover:bg-black/60 transition-colors" />
+              <div className="absolute inset-0 bg-black/55" />
               <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
                 <p className="font-heading font-bold text-lg sm:text-2xl text-white">{current.title}</p>
                 <p className="mt-1 text-sm text-gray-200 max-w-md hidden sm:block">
