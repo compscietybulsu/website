@@ -66,10 +66,4 @@ pnpm run seed:admin
 pnpm run deploy
 ```
 
-Workers Builds: empty build command + `pnpm run deploy` (see
-[`docs/deploy.md`](./docs/deploy.md)). Do not use plain `pnpm run build` alone.
-
-## Admin login
-
-Credentials live in `.dev.vars` (`ADMIN_USER` / `ADMIN_PASS`). Seed with
-`pnpm run seed:admin`, then open `/admin`.
+Then log in at `/admin`.

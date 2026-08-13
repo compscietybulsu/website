@@ -21,11 +21,21 @@
     "ghcr.io/compscietybulsu/devcontainer/act"
   ],
   "remoteUser": "vscode",
+  "remoteEnv": {
+    "NODE_ENV": "development"
+  },
   "forwardPorts": [3000, 5000],
   "portsAttributes": {
-    "3000": { "label": "Next.js (pnpm dev)", "onAutoForward": "notify" },
-    "5000": { "label": "Express API", "onAutoForward": "notify" }
+    "3000": {
+      "label": "Next.js (pnpm dev)",
+      "onAutoForward": "notify"
+    },
+    "5000": {
+      "label": "Express API (cd server && pnpm dev)",
+      "onAutoForward": "notify"
+    }
   },
+  "waitFor": "postCreateCommand",
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "customizations": {
     "vscode": {
