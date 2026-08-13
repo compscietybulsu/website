@@ -6,25 +6,54 @@ import { api } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminNav from "@/components/admin/AdminNav";
+import Pagination from "@/components/blog/Pagination";
+
+const PAGE_SIZE = 10;
 
 function DashboardContent() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [refresh, setRefresh] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
     api
-      .get("/api/blogs")
-      .then(setBlogs)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+      .get(`/api/blogs?page=${page}&limit=${PAGE_SIZE}`)
+      .then((data) => {
+        if (cancelled) return;
+        setBlogs(data.items);
+        setTotalPages(data.totalPages);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [page, refresh]);
+
+  function handlePageChange(nextPage) {
+    setLoading(true);
+    setError("");
+    setPage(nextPage);
+  }
 
   async function handleDelete(id) {
     if (!confirm("Delete this blog post?")) return;
     try {
       await api.delete(`/api/blogs/${id}`, { token: getToken() });
-      setBlogs((prev) => prev.filter((b) => b._id !== id));
+      setLoading(true);
+      if (blogs.length === 1 && page > 1) {
+        setPage(page - 1);
+      } else {
+        setRefresh((r) => r + 1);
+      }
     } catch (err) {
       alert(err.message);
     }
@@ -71,6 +100,8 @@ function DashboardContent() {
             <p className="text-green-200/60 text-sm">No blog posts yet.</p>
           )}
         </div>
+
+        <Pagination page={page} totalPages={totalPages} onChange={handlePageChange} />
       </div>
     </div>
   );
