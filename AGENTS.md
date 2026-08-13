@@ -18,6 +18,7 @@ components/     Frontend UI components
 lib/            Frontend API client, auth token helper, Cloudinary upload helper
 server/         Express API: routes, models, middleware, config, scripts
 docs/           Deploy docs, ticket backlog
+.agents/        Canonical project skills — see docs/agent-skills.md
 SPEC.md         The contract. Read this before changing behavior.
 tasks.md        Dependency-ordered execution plan derived from SPEC.md
 docs/tickets.md GitHub-issue-ready backlog
@@ -45,9 +46,9 @@ These are not suggestions.
    `chore/<short-desc>`. Match the change type to the prefix honestly (a
    new feature is `feat/`, a bug fix is `fix/`, scaffolding/tooling/docs is
    `chore/`).
-7. **Don't touch skills directories** (`.claude/skills/`, `.cursor/skills-*`,
-   or similar) from this repo's PRs. Project-level skills, if adopted, land
-   in a separate, dedicated PR.
+7. **Don't touch vendor skills directories** (`.claude/skills/`,
+   `.cursor/skills-*`, or similar) from this repo's PRs. This repo's own
+   project skills are canonical in `.agents/skills/` (see "Skills" below).
 
 ## How to work here
 
@@ -74,16 +75,18 @@ These are not suggestions.
 | `.kiro/steering/*.md` | Kiro steering docs, all point back here |
 | `.cursor/rules/website.mdc` | Always-applied Cursor rule pointing here |
 | `.agy/AGENTS.md` | agy entry point pointing here |
+| `.agents/README.md` | Skills home doc; canonical skills under `.agents/skills/` |
 | `README.md` | Human-facing setup/run instructions (pnpm) |
 | `docs/agent-skills.md` | Project skills index (agy + Cursor); canonical under `.agents/skills/` |
 
 
 ## Skills (agy + Cursor)
 
-Project skills ship in a **separate PR** (`feat/agent-skills`). Canonical path:
-`.agents/skills/*/SKILL.md`. Cursor uses the symlink `.cursor/skills -> ../.agents/skills`.
-
-Index: [`docs/agent-skills.md`](docs/agent-skills.md).
+Canonical project skills live at `.agents/skills/*/SKILL.md` — the single
+source. Cursor reads the same files through the symlink
+`.cursor/skills -> ../.agents/skills`. See `.agents/README.md` for the
+mirroring rules and [`docs/agent-skills.md`](docs/agent-skills.md) for the
+human index.
 
 | Skill | Use when |
 |---|---|
