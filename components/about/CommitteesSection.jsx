@@ -1,16 +1,5 @@
 import SectionHeading from "./SectionHeading";
-
-// TODO: replace with real committees from the backend
-const COMMITTEES = [
-  "Public Information Committee",
-  "Membership Committee",
-  "Wellness & Engagement Committee",
-  "Financial Committee",
-  "Multimedia Committee",
-  "Technical Committee",
-  "Logistics Committee",
-  "Developer Core Committee",
-];
+import { COMMITTEES } from "@/lib/aboutContent";
 
 export default function CommitteesSection() {
   return (
