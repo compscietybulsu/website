@@ -6,12 +6,6 @@ This repo ships project-specific **Agent Skills** that work for both
 a symlink at `.cursor/skills -> ../.agents/skills`. See
 [`.agents/README.md`](../.agents/README.md) for the mirroring rules.
 
-> **Note for maintainers:** if/when a root `AGENTS.md` exists in this repo,
-> add a short "Skills" section there that links to this file (or inlines the
-> table below) so agents reading `AGENTS.md` first still find these. This
-> file is intentionally self-contained so the skills PR doesn't depend on
-> `AGENTS.md` existing.
-
 ## Skills
 
 | Skill | Path | Use it when |

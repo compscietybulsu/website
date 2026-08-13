@@ -1,7 +1,7 @@
 # Agent steering
 
-Working conventions, hard guardrails, and the doc map for this repo live in
-[`AGENTS.md`](../../AGENTS.md) at the repo root — read that first.
+Repo-wide agent guidance is centralized in
+[`AGENTS.md`](../../AGENTS.md) at the repo root — read it first (layout,
+hard guardrails, doc map).
 
-Task sequencing lives in [`tasks.md`](../../tasks.md); the issue backlog
-lives in [`docs/tickets.md`](../../docs/tickets.md).
+Read [`SPEC.md`](../../SPEC.md) for the product contract.
