@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getToken } from "@/lib/auth";
+import { getValidToken } from "@/lib/auth";
 
 export default function AdminGuard({ children }) {
   const router = useRouter();
-  const [hasToken] = useState(() => Boolean(getToken()));
+  const [hasValidToken] = useState(() => Boolean(getValidToken()));
 
   useEffect(() => {
-    if (!hasToken) {
+    if (!hasValidToken) {
       router.replace("/admin");
     }
-  }, [hasToken, router]);
+  }, [hasValidToken, router]);
 
-  if (!hasToken) return null;
+  if (!hasValidToken) return null;
   return children;
 }
