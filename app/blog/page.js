@@ -14,17 +14,33 @@ export default function BlogPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    let cancelled = false;
     api
-      .get("/api/blogs")
-      .then(setBlogs)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+      .get(`/api/blogs?page=${page}&limit=${PAGE_SIZE}`)
+      .then((data) => {
+        if (cancelled) return;
+        setBlogs(data.items);
+        setTotalPages(data.totalPages);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [page]);
 
-  const totalPages = Math.max(1, Math.ceil(blogs.length / PAGE_SIZE));
-  const pageBlogs = blogs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  function handlePageChange(nextPage) {
+    setLoading(true);
+    setError("");
+    setPage(nextPage);
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#020806] via-[#0a2818] to-[#0d3320]">
@@ -43,11 +59,11 @@ export default function BlogPage() {
             <p className="text-green-200/70">No blog posts yet — check back soon.</p>
           )}
 
-          {pageBlogs.map((blog) => (
+          {blogs.map((blog) => (
             <BlogCard key={blog._id} blog={blog} />
           ))}
 
-          <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+          <Pagination page={page} totalPages={totalPages} onChange={handlePageChange} />
         </div>
       </section>
 

@@ -6,6 +6,7 @@ import { clearToken } from "@/lib/auth";
 
 const TABS = [
   { label: "Blogs", href: "/admin/dashboard" },
+  { label: "Announcements", href: "/admin/announcements" },
   { label: "Partners", href: "/admin/partners" },
 ];
 
