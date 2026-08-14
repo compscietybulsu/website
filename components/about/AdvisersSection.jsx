@@ -1,37 +1,24 @@
 import SectionHeading from "./SectionHeading";
-
-// TODO: replace with real advisers from the backend
-const ADVISERS = [
-  {
-    name: "Name",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    imageSide: "left",
-  },
-  {
-    name: "Name",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    imageSide: "right",
-  },
-];
+import { ADVISERS } from "@/lib/aboutContent";
 
 export default function AdvisersSection() {
   return (
     <section className="px-4 sm:px-8 mt-16">
       <SectionHeading>Advisers</SectionHeading>
-      <div className="mx-auto max-w-5xl grid sm:grid-cols-2 gap-6 mt-8">
-        {ADVISERS.map((a, i) => (
+      <div className="mx-auto max-w-5xl flex flex-wrap justify-center gap-6 mt-8">
+        {ADVISERS.map((adviser) => (
           <div
-            key={i}
-            className={`rounded-2xl p-6 bg-[#1a4d2e] flex gap-5 items-start ${
-              a.imageSide === "right" ? "flex-row-reverse" : ""
-            }`}
+            key={adviser.name}
+            className="w-full sm:w-72 rounded-2xl p-6 bg-[#1a4d2e] flex flex-col items-center text-center"
           >
-            {/* TODO: swap for a real photo */}
-            <div className="w-24 h-24 sm:w-32 sm:h-32 shrink-0 rounded-xl bg-gray-200" />
-            <div className="flex-1">
-              <p className="text-green-100/80 text-sm leading-relaxed">{a.bio}</p>
-              <p className="text-white text-sm mt-3 text-right">--{a.name}</p>
+            <div className="w-24 h-24 rounded-full bg-gray-200 overflow-hidden mb-4">
+              {adviser.photo && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={adviser.photo} alt={adviser.name} className="w-full h-full object-cover" />
+              )}
             </div>
+            <p className="font-heading font-bold text-white">{adviser.name}</p>
+            <p className="text-green-200/70 text-sm mt-1">{adviser.role}</p>
           </div>
         ))}
       </div>

@@ -7,6 +7,8 @@ import { clearToken } from "@/lib/auth";
 const TABS = [
   { label: "Blogs", href: "/admin/dashboard" },
   { label: "Partners", href: "/admin/partners" },
+  { label: "Executives", href: "/admin/leaders" },
+  { label: "Committees", href: "/admin/committees" },
 ];
 
 export default function AdminNav() {
@@ -25,9 +27,8 @@ export default function AdminNav() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`font-heading font-semibold text-sm ${
-              pathname.startsWith(tab.href) ? "text-white" : "text-green-300/60 hover:text-white"
-            } transition-colors`}
+            className={`font-heading font-semibold text-sm ${pathname.startsWith(tab.href) ? "text-white" : "text-green-300/60 hover:text-white"
+              } transition-colors`}
           >
             {tab.label}
           </Link>
