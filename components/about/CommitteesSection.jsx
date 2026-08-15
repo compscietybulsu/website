@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCachedFetch } from "@/lib/useCachedFetch";
 import SectionHeading from "./SectionHeading";
 import { COMMITTEES_META } from "@/lib/aboutContent";
-import { api } from "@/lib/api";
 
 function MemberRow({ name, role, photo, isHead }) {
   return (
@@ -23,33 +22,17 @@ function MemberRow({ name, role, photo, isHead }) {
 }
 
 export default function CommitteesSection() {
-  const [members, setMembers] = useState([]);
-  const [leaders, setLeaders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    Promise.all([api.get("/api/committee-members"), api.get("/api/leaders")])
-      .then(([membersData, leadersData]) => {
-        setMembers(membersData);
-        setLeaders(leadersData);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: members, loading: membersLoading } = useCachedFetch("committee-members", "/api/committee-members");
+  const { data: leaders, loading: leadersLoading } = useCachedFetch("leaders", "/api/leaders");
+  const loading = membersLoading || leadersLoading;
 
   return (
     <section className="px-4 sm:px-8 mt-16 mb-20">
       <SectionHeading>Committees</SectionHeading>
 
       {loading && <p className="text-green-200/70 text-sm mt-8 text-center">Loading committees...</p>}
-      {!loading && error && (
-        <p className="text-green-200/70 text-sm mt-8 text-center">
-          Couldn&apos;t load committee members right now.
-        </p>
-      )}
 
-      {!loading && !error && (
+      {!loading && (
         <div className="mx-auto max-w-5xl grid sm:grid-cols-2 gap-4 mt-8">
           {COMMITTEES_META.map((committee) => {
             const associates = members.filter((m) => m.committeeSlug === committee.slug);

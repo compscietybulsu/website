@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCachedFetch } from "@/lib/useCachedFetch";
 import SectionHeading from "./SectionHeading";
 import { OFFICER_SLOTS } from "@/lib/aboutContent";
-import { api } from "@/lib/api";
 
 function OfficerCard({ name, photo, role, featured }) {
   return (
@@ -28,16 +27,7 @@ function OfficerCard({ name, photo, role, featured }) {
 }
 
 export default function OfficersSection() {
-  const [leaders, setLeaders] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    api
-      .get("/api/leaders")
-      .then(setLeaders)
-      .catch(() => { })
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: leaders, loading } = useCachedFetch("leaders", "/api/leaders");
 
   function leaderFor(key, fallbackRole) {
     const found = leaders.find((l) => l.key === key);
