@@ -13,7 +13,10 @@ export default function AdminGuard({ children }) {
       router.replace("/admin");
       return;
     }
-    setChecked(true);
+
+    queueMicrotask(() => {
+      setChecked(true);
+    });
 
     function handleAuthExpired() {
       router.replace("/admin");
