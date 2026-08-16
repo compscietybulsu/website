@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
@@ -9,10 +9,18 @@ import ImageUploader from "./ImageUploader";
 
 export default function LeaderForm({ leaderKey, roleLabel, initialData }) {
     const router = useRouter();
-    const [name, setName] = useState(initialData?.name || "");
-    const [photo, setPhoto] = useState(initialData?.photo || "");
+    const [name, setName] = useState("");
+    const [photo, setPhoto] = useState("");
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
+
+    // Sync state whenever initialData changes (fixes the empty form / race condition bug)
+    useEffect(() => {
+        if (initialData) {
+            setName(initialData.name || "");
+            setPhoto(initialData.photo || "");
+        }
+    }, [initialData]);
 
     async function handleSubmit(e) {
         e.preventDefault();

@@ -1,9 +1,13 @@
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import Leader from "../server/models/Leader.js";
 
-dotenv.config();
+// Load the environment variables
+dotenv.config({ path: "./server/.env" });
 
+// Mongoose instance that the Leader model is using!
+const mongoose = Leader.base;
+
+// Replace for new set of Officers
 const SEED_DATA = [
     { key: "president", name: "Ellah D. Benerado" },
     { key: "chief-of-staff", name: "Jerome S. Teodoro" },
@@ -20,15 +24,24 @@ const SEED_DATA = [
 ];
 
 async function run() {
-    await mongoose.connect(process.env.MONGODB_URI);
+    try {
+        console.log("Connecting to MongoDB...");
+        await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 5000 });
+        console.log("✅ Successfully connected to the right Mongoose instance!");
+    } catch (error) {
+        console.error("❌ Failed to connect:", error.message);
+        process.exit(1);
+    }
+
     for (const entry of SEED_DATA) {
         await Leader.findOneAndUpdate(
             { key: entry.key },
             { key: entry.key, name: entry.name, photo: "" },
-            { upsert: true, new: true }
+            { upsert: true, returnDocument: "after" }
         );
         console.log(`Seeded ${entry.key}: ${entry.name}`);
     }
+
     console.log("Done.");
     process.exit(0);
 }
