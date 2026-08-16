@@ -6,14 +6,26 @@ import { getToken } from "@/lib/auth";
 
 export default function AdminGuard({ children }) {
   const router = useRouter();
-  const [hasToken] = useState(() => Boolean(getToken()));
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    if (!hasToken) {
+    if (!getToken()) {
+      router.replace("/admin");
+      return;
+    }
+
+    queueMicrotask(() => {
+      setChecked(true);
+    });
+
+    function handleAuthExpired() {
       router.replace("/admin");
     }
-  }, [hasToken, router]);
 
-  if (!hasToken) return null;
+    window.addEventListener("compsciety:auth-expired", handleAuthExpired);
+    return () => window.removeEventListener("compsciety:auth-expired", handleAuthExpired);
+  }, [router]);
+
+  if (!checked) return null;
   return children;
 }
