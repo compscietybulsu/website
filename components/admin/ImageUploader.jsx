@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { uploadImage } from "@/lib/media";
+import { uploadImage } from "@/lib/cloudinary";
 import { getToken } from "@/lib/auth";
 
 export default function ImageUploader({ value, onChange, label = "Image" }) {
