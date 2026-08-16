@@ -13,22 +13,14 @@ export default function Hero() {
           CompSciety
         </h1>
         <p className="mt-4 max-w-md text-green-300/80 text-sm sm:text-base">
-          This is the official Computer Science Society Webpage.{" "}
-          <span className="text-blue-400 font-medium">
-            Empowering innovators, leaders,
-          </span>{" "}
-          and {" "}
-          <span className="text-blue-400 font-medium">
-            changemakers
-          </span>{" "}
-          through real-world projects, continuous learning, and the pursuit of excellence.
+          This is the official Computer Science Society webpage. 
         </p>
         <div className="mt-8 sm:mt-0 sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2">
-          <a
-            href="https://forms.gle/Qmfus594kxrXMCJd7"
-            target="_blank"
+          <a 
+            href="https://forms.gle/Qmfus594kxrXMCJd7" 
+            target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-12 py-4 shadow-xl shadow-green-950/40 border-4 border-green-500 transform transition-all duration-300 ease-out hover:scale-105 hover:shadow-2xl hover:shadow-green-900/60 active:scale-95"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-12 py-4 shadow-xl shadow-green-950/40 border-4 border-green-500 hover:opacity-90 transition-opacity"
           >
             Sync Up!
           </a>

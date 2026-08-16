@@ -2,36 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { getToken } from "@/lib/auth";
 
 export default function AdminGuard({ children }) {
   const router = useRouter();
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    // Perform your auth check here (e.g., checking localStorage or token)
-    const token = localStorage.getItem("adminToken");
-
-    if (!token) {
+    if (!getToken()) {
       router.replace("/admin");
       return;
     }
+    setChecked(true);
 
-    // Use setTimeout or queue microtask if state must be updated asynchronously, 
-    // or better yet, verify token and set state safely.
-    const timer = setTimeout(() => {
-      setChecked(true);
-    }, 0);
+    function handleAuthExpired() {
+      router.replace("/admin");
+    }
 
-    return () => clearTimeout(timer);
+    window.addEventListener("compsciety:auth-expired", handleAuthExpired);
+    return () => window.removeEventListener("compsciety:auth-expired", handleAuthExpired);
   }, [router]);
 
-  if (!checked) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
-        <p>Loading admin panel...</p>
-      </div>
-    );
-  }
-
-  return <>{children}</>;
+  if (!checked) return null;
+  return children;
 }
