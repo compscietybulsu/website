@@ -57,17 +57,18 @@ introducing a new color palette or radius scale.
 
 Grep for `TODO` before assuming these are bugs:
 
-- `components/AnnouncementCarousel.jsx` — hardcoded `CARDS`, marked
-  "replace with data fetched from the backend once the API is live".
+- `components/AnnouncementCarousel.jsx` — fetches `/api/blogs` and renders the
+  newest 3 posts as announcements (no hardcoded `CARDS` on main anymore). PR
+  #34 replaces this with a dedicated `/api/announcements` endpoint.
 - `components/PartnersSection.jsx` — gray circles, "replace... with real
   partner logos from the backend".
 - `components/about/OfficersSection.jsx` and sibling About sections — gray
   photo placeholders, hardcoded titles.
 - `components/AboutSection.jsx` — gray `aspect-[4/3]` placeholder for a real
   photo.
-- **Broken link**: `Navbar` and `Footer` both link to `/contact`, but no
-  `app/contact/page.js` exists yet. If your task touches navigation, flag or
-  fix this — see `website-review`.
+- **Navbar/Footer `Contact`** now anchors to `#site-footer` (the in-page footer
+  Contact section) — a deliberate choice, not a broken `/contact` link. See
+  `website-review`.
 
 See `website-content` for the static-vs-API decision when replacing these.
 
