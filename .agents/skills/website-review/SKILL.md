@@ -35,10 +35,10 @@ See `website-spec` for the full checklist. Quick version:
 
 - [ ] Every `href` added to `components/Navbar.jsx` or `components/Footer.jsx`
       NAV_LINKS resolves to a real route under `app/`.
-- [ ] Known existing gap: both Navbar and Footer link to `/contact`, but there
-      is no `app/contact/page.js` yet. Don't introduce *new* dead links
-      following this pattern — either add the page or don't link to it. If
-      you're touching navigation anyway, consider fixing this one too.
+- [ ] `Contact` in `Navbar.jsx`/`Footer.jsx` resolves to `#site-footer` (the
+      in-page footer Contact section) — a deliberate anchor, not a dead
+      `/contact` route. Don't "fix" it into `/contact` unless a real
+      `app/contact/page.js` route exists.
 - [ ] External links (`SOCIALS` in `Footer.jsx`, `fbLink` on blogs) use
       `target="_blank" rel="noopener noreferrer"` like the existing pattern.
 
