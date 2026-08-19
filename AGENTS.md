@@ -7,8 +7,23 @@ should read this first, then follow the doc map below.
 
 Public website for the Computer Science Society (`compscietybulsu/website`).
 Two apps: a Next.js frontend (repo root) and an Express + MongoDB backend
-(`server/`). See `SPEC.md` for the full contract — what exists, what's
-missing, and what "done" means for each feature.
+(`server/`). See `SPEC.md` for the full product contract.
+
+## Current priorities (active)
+
+Work these tracks first. GitHub issues + milestones are the tracker — do not
+reintroduce a `tasks.md` checklist.
+
+| Priority | Track | Issue | Agent skill | Focus |
+|---|---|---|---|---|
+| **P0** | Cloudflare deploy | [#24](https://github.com/compscietybulsu/website/issues/24) | `website-deploy-cf` | Next.js on Workers (OpenNext); Pages only for true static artifacts |
+| **P0** | Remote dev | [#26](https://github.com/compscietybulsu/website/issues/26) | `website-remote-dev` | Codespaces / Dev Containers — reliable contributor path |
+| **P0** | Backend prep | [#27](https://github.com/compscietybulsu/website/issues/27) | `website-backend-prep` | API ready for a public frontend (CORS, auth, locks, deploy docs) |
+
+Milestone: [Priority](https://github.com/compscietybulsu/website/milestone/5).
+
+Everything else (content polish, announcements model, Podman Mongo, etc.)
+waits unless it blocks a P0 track.
 
 ## Layout
 
@@ -17,10 +32,10 @@ app/            Next.js App Router pages (frontend routes)
 components/     Frontend UI components
 lib/            Frontend API client, auth token helper, Cloudinary upload helper
 server/         Express API: routes, models, middleware, config, scripts
-docs/           Deploy docs, ticket backlog
-SPEC.md         The contract. Read this before changing behavior.
-tasks.md        Dependency-ordered execution plan derived from SPEC.md
-docs/tickets.md GitHub-issue-ready backlog
+docs/           Deploy docs, ticket backlog, skills index
+.spec / SPEC    The contract. Read before changing behavior.
+.devcontainer/  Codespaces / Dev Container remote-dev config
+.agents/skills/ Canonical project Agent Skills (Cursor symlink: .cursor/skills)
 ```
 
 ## Hard guardrails
@@ -31,65 +46,62 @@ These are not suggestions.
    `yarn` instructions or lockfiles. If you see `package-lock.json` in a
    diff, that's a bug to fix, not a pattern to follow.
 2. **Containers are Podman, not Docker**, if and when containers show up in
-   this repo. Do not introduce Docker-specific tooling.
+   this repo. Do not introduce Docker-specific tooling. (Codespaces may use
+   docker-in-docker under the hood — keep docs Podman-first for local, and
+   Codespaces-accurate for remote.)
 3. **Never commit secrets.** No real API keys, DB URIs, JWT secrets, or
    Cloudinary credentials in any file, ever — including `.env.example`
    files, which must contain variable *names* only.
 4. **Never document personal git/SSH/GPG tooling in this repo.** Individual
    contributors' signing keys, SSH profiles, and `git-profile`/`git-ssh`
-   setup are personal machine config, not project config. Do not add them
-   to `AGENTS.md`, `README.md`, or any committed file.
+   setup are personal machine config, not project config.
 5. **SPEC.md is the source of truth.** If a change contradicts `SPEC.md`,
    update `SPEC.md` first, then code — never let them drift apart silently.
 6. **Branch naming**: `feat/<short-desc>`, `fix/<short-desc>`,
-   `chore/<short-desc>`. Match the change type to the prefix honestly (a
-   new feature is `feat/`, a bug fix is `fix/`, scaffolding/tooling/docs is
-   `chore/`).
-7. **Don't touch skills directories** (`.claude/skills/`, `.cursor/skills-*`,
-   or similar) from this repo's PRs. Project-level skills, if adopted, land
-   in a separate, dedicated PR.
+   `chore/<short-desc>`. Match the change type to the prefix honestly.
+7. **Project skills live under `.agents/skills/`** (mirrored for Cursor via
+   `.cursor/skills` symlink). Do not invent a second skills tree.
 
 ## How to work here
 
-1. Read `SPEC.md` for the area you're touching (overview, stack, API
-   contracts, feature checklist, validation criteria).
-2. Check `tasks.md` for whether the work is already sequenced, and what it
-   depends on.
-3. If the task isn't in `tasks.md` yet, add it before starting, with a
-   stable `T0xx` ID.
-4. Make the change. Keep it scoped to one task where possible.
+1. Read `SPEC.md` for the area you're touching.
+2. Confirm the work is in the **Current priorities** table (or explicitly
+   approved as a side quest). Open/use the matching GitHub issue.
+3. Load the matching agent skill from `.agents/skills/` when the track
+   matches.
+4. Make the change. Keep it scoped to one issue where possible.
 5. Verify against the relevant "Validation criteria" entry in `SPEC.md`
-   §6 before calling it done.
-6. If you're closing out a ticket from `docs/tickets.md`, check its
-   acceptance criteria explicitly.
+   before calling it done.
+6. Check the issue acceptance criteria before closing.
 
 ## Doc map
 
 | File | Purpose |
 |---|---|
-| `SPEC.md` | The contract: overview, architecture, API/data contracts, feature checklist (MVP/V1/Future), validation criteria |
-| `tasks.md` | Dependency-ordered task list derived from `SPEC.md` |
-| `docs/tickets.md` | GitHub-issue-ready backlog, cross-referenced to `SPEC.md` and `tasks.md` |
+| `SPEC.md` | Product contract: architecture, API/data, checklist, validation |
+| `docs/tickets.md` | Issue backlog bodies + labels (tracker of record is GitHub Issues) |
 | `CLAUDE.md` | Pointer to this file + `SPEC.md`, for Claude-based tools |
 | `.kiro/steering/*.md` | Kiro steering docs, all point back here |
 | `.cursor/rules/website.mdc` | Always-applied Cursor rule pointing here |
 | `.agy/AGENTS.md` | agy entry point pointing here |
 | `README.md` | Human-facing setup/run instructions (pnpm) |
-| `docs/agent-skills.md` | Project skills index (agy + Cursor); canonical under `.agents/skills/` |
-
+| `docs/agent-skills.md` | Project skills index; canonical under `.agents/skills/` |
 
 ## Skills (agy + Cursor)
 
-Project skills ship in a **separate PR** (`feat/agent-skills`). Canonical path:
-`.agents/skills/*/SKILL.md`. Cursor uses the symlink `.cursor/skills -> ../.agents/skills`.
+Canonical path: `.agents/skills/*/SKILL.md`. Cursor uses
+`.cursor/skills -> ../.agents/skills`.
 
 Index: [`docs/agent-skills.md`](docs/agent-skills.md).
 
 | Skill | Use when |
 |---|---|
+| `website-deploy-cf` | **P0** — Cloudflare Workers / Pages frontend deploy |
+| `website-remote-dev` | **P0** — Codespaces / Dev Containers remote contributor path |
+| `website-backend-prep` | **P0** — API production readiness for a public frontend |
 | `website-spec` | Start of work; SPEC/AGENTS drift; lint/build validation |
 | `website-frontend` | `app/` / `components/` UI and brand styling |
-| `website-backend` | `server/` Express, Mongoose, JWT, Cloudinary |
+| `website-backend` | Day-to-day `server/` Express / Mongoose / JWT / Cloudinary |
 | `website-content` | Static content vs API-backed content decisions |
 | `agent-handoff` | Agent/session switch (agy ↔ Cursor ↔ Kiro) |
 | `website-review` | PR review: secrets, drift, dead links, lockfiles |
