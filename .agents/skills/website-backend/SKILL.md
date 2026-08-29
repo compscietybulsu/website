@@ -5,6 +5,12 @@ description: Guides work on the Express + Mongoose API server for this website �
 
 # Website Backend
 
+> **Status (main, per SPEC §2): legacy.** Production hosting is Cloudflare
+> Workers + D1 + R2 (same-origin `/api`); the Express/Mongo/Cloudinary stack
+> in `server/` is kept in-tree but is **not** the production API. `SPEC.md`
+> §3 documents the Workers/D1 route surface. Prefer D1 routes in `app/api/**`;
+> edit `server/` only when the task explicitly targets the legacy app.
+
 Standalone Express 5 API in `server/` (separate `package.json`, ESM `"type":
 "module"`, own lockfile). Not part of the Next.js build — run and deploy
 separately. Package manager is **pnpm**, not npm.
