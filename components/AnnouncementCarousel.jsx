@@ -6,17 +6,33 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import GradientPillButton from "./ui/GradientPillButton";
 import { api } from "@/lib/api";
 
-const MAX_ANNOUNCEMENTS = 5;
+const MAX_ANNOUNCEMENTS = 3;
 const AUTO_SCROLL_MS = 5000;
 
-function excerpt(text, length = 200) {
+function excerpt(text, length = 120) {
   if (!text) return "";
   if (text.length <= length) return text;
   return text.slice(0, length).trim() + "...";
 }
 
+function isExternalLink(link) {
+  return /^https?:\/\//i.test(link);
+}
+
+function CarouselSkeleton() {
+  return (
+    <div className="h-48 sm:h-60 bg-gray-200 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gray-300 animate-pulse" />
+      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 space-y-2">
+        <div className="h-5 w-1/2 bg-gray-400/70 rounded animate-pulse" />
+        <div className="h-3 w-3/4 bg-gray-400/50 rounded animate-pulse hidden sm:block" />
+      </div>
+    </div>
+  );
+}
+
 export default function AnnouncementCarousel() {
-  const [blogs, setBlogs] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [index, setIndex] = useState(0);
@@ -24,23 +40,43 @@ export default function AnnouncementCarousel() {
 
   useEffect(() => {
     api
-      .get("/api/blogs")
-      .then((data) => setBlogs(data.slice(0, MAX_ANNOUNCEMENTS)))
+      .get("/api/announcements")
+      .then((data) => setAnnouncements(data.slice(0, MAX_ANNOUNCEMENTS)))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
-    if (blogs.length <= 1 || isPaused) return;
+    if (announcements.length <= 1 || isPaused) return;
     const timer = setInterval(() => {
-      setIndex((i) => (i + 1) % blogs.length);
+      setIndex((i) => (i + 1) % announcements.length);
     }, AUTO_SCROLL_MS);
     return () => clearInterval(timer);
-  }, [blogs.length, isPaused]);
+  }, [announcements.length, isPaused]);
 
-  const prev = () => setIndex((i) => (i - 1 + blogs.length) % blogs.length);
-  const next = () => setIndex((i) => (i + 1) % blogs.length);
-  const current = blogs[index];
+  const prev = () => setIndex((i) => (i - 1 + announcements.length) % announcements.length);
+  const next = () => setIndex((i) => (i + 1) % announcements.length);
+  const current = announcements[index];
+
+  const cardContent = current && (
+    <>
+      {current.image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={current.image}
+          alt={current.title}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
+      <div className="absolute inset-0 bg-black/55 group-hover:bg-black/60 transition-colors" />
+      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+        <p className="font-heading font-bold text-lg sm:text-2xl text-white">{current.title}</p>
+        <p className="mt-1 text-sm text-gray-200 max-w-md hidden sm:block">
+          {excerpt(current.description)}
+        </p>
+      </div>
+    </>
+  );
 
   return (
     <section className="relative z-10 px-4 sm:px-8 -mt-16">
@@ -49,48 +85,42 @@ export default function AnnouncementCarousel() {
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {loading && (
-          <div className="aspect-[16/10] sm:aspect-[21/10] bg-gray-200 flex items-center justify-center">
-            <p className="text-gray-600">Loading announcements...</p>
-          </div>
-        )}
+        {loading && <CarouselSkeleton />}
 
         {!loading && error && (
-          <div className="aspect-[16/10] sm:aspect-[21/10] bg-gray-200 flex items-center justify-center px-6 text-center">
+          <div className="h-48 sm:h-60 bg-gray-200 flex items-center justify-center px-6 text-center">
             <p className="text-gray-600">Couldn&apos;t load announcements right now.</p>
           </div>
         )}
 
-        {!loading && !error && blogs.length === 0 && (
-          <div className="aspect-[16/10] sm:aspect-[21/10] bg-gray-200 flex items-center justify-center px-6 text-center">
+        {!loading && !error && announcements.length === 0 && (
+          <div className="h-48 sm:h-60 bg-gray-200 flex items-center justify-center px-6 text-center">
             <p className="text-gray-600">No announcements yet — check back soon.</p>
           </div>
         )}
 
         {!loading && !error && current && (
           <>
-            {/* Using aspect ratio classes to maintain a natural image frame */}
-            <Link href={`/blog/${current._id}`} className="block relative aspect-[16/10] sm:aspect-[21/10] bg-gray-800 group">
-              {current.image && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={current.image}
-                  alt={current.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent group-hover:from-black/90 transition-colors" />
-              <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
-                <p className="font-heading font-bold text-lg sm:text-2xl text-white drop-shadow-md">
-                  {current.title}
-                </p>
-                <p className="mt-1.5 text-xs sm:text-sm text-white/95 leading-relaxed max-w-xl drop-shadow line-clamp-2 sm:line-clamp-3">
-                  {excerpt(current.content, 220)}
-                </p>
-              </div>
-            </Link>
+            {current.link ? (
+              isExternalLink(current.link) ? (
+                <a
+                  href={current.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block relative h-48 sm:h-60 bg-gray-800 group"
+                >
+                  {cardContent}
+                </a>
+              ) : (
+                <Link href={current.link} className="block relative h-48 sm:h-60 bg-gray-800 group">
+                  {cardContent}
+                </Link>
+              )
+            ) : (
+              <div className="relative h-48 sm:h-60 bg-gray-800 group">{cardContent}</div>
+            )}
 
-            {blogs.length > 1 && (
+            {announcements.length > 1 && (
               <>
                 <button
                   onClick={prev}
@@ -107,12 +137,13 @@ export default function AnnouncementCarousel() {
                   <ChevronRight size={20} strokeWidth={3} />
                 </button>
 
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
-                  {blogs.map((b, i) => (
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+                  {announcements.map((a, i) => (
                     <span
-                      key={b._id}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${i === index ? "bg-white" : "bg-white/40"
-                        }`}
+                      key={a._id}
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                        i === index ? "bg-white" : "bg-white/40"
+                      }`}
                     />
                   ))}
                 </div>

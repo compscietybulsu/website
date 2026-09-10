@@ -6,7 +6,7 @@ export default function GradientPillButton({ children, onClick, href, className 
       {children}
     </span>
   );
-  const wrapperClass = `rounded-full font-heading font-semibold text-white text-sm sm:text-base p-[2px] bg-gradient-to-r from-green-500 to-blue-500 ${className}`;
+  const wrapperClass = `rounded-full font-heading font-semibold text-white text-sm sm:text-base p-[2px] bg-gradient-to-r from-green-500 to-blue-500 transition-transform duration-200 hover:scale-105 active:scale-95 ${className}`;
 
   if (href) {
     return (
