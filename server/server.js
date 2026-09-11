@@ -10,6 +10,7 @@ import uploadRoutes from "./routes/uploads.js";
 import partnerRoutes from "./routes/partners.js";
 import committeeMemberRoutes from "./routes/committeeMembers.js";
 import leaderRoutes from "./routes/leaders.js";
+import announcementRoutes from "./routes/announcements.js";
 
 // Always load server/.env (not cwd / not repo-root .env).
 dotenv.config({
@@ -28,6 +29,7 @@ app.use("/api/uploads", uploadRoutes);
 app.use("/api/partners", partnerRoutes);
 app.use("/api/committee-members", committeeMemberRoutes);
 app.use("/api/leaders", leaderRoutes);
+app.use("/api/announcements", announcementRoutes);
 
 const PORT = process.env.PORT || 5000;
 
