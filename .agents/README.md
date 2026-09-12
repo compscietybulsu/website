@@ -24,6 +24,16 @@ to `.agents/skills/` so the two agent surfaces never drift apart.
 
 ## Available skills
 
+### P0 (current org priorities)
+
+| Skill | Use it when |
+| --- | --- |
+| `website-deploy-cf` | Cloudflare Workers / Pages frontend deploy |
+| `website-remote-dev` | Codespaces / Dev Containers remote contributor path |
+| `website-backend-prep` | API production readiness for a public frontend |
+
+### Supporting
+
 | Skill | Use it when |
 | --- | --- |
 | `website-spec` | Before/after any change, to check for SPEC/AGENTS drift and run validation |
@@ -33,4 +43,4 @@ to `.agents/skills/` so the two agent surfaces never drift apart.
 | `agent-handoff` | Ending a session or switching agents (agy ↔ Cursor ↔ Kiro) |
 | `website-review` | Reviewing a PR or diff before merge |
 
-See `docs/agent-skills.md` at the repo root for the same index rendered for humans.
+See `docs/agent-skills.md` for the same index rendered for humans.

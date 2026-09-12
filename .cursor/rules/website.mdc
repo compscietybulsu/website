@@ -5,12 +5,14 @@ alwaysApply: true
 
 Read [AGENTS.md](../../AGENTS.md) for repo layout, hard guardrails (pnpm
 only, Podman not Docker, no secrets, no personal git/SSH/GPG tooling in
-committed files, branch prefixes), and the doc map.
+committed files, branch prefixes), **current P0 priorities**, and the doc
+map.
 
 Read [SPEC.md](../../SPEC.md) for the product contract: architecture, API
-and data contracts, feature checklist (MVP/V1/Future), and validation
-criteria. Update `SPEC.md` before changing behavior it describes — never
-let code and spec drift apart silently.
+and data contracts, feature checklist, and validation criteria. Update
+`SPEC.md` before changing behavior it describes — never let code and spec
+drift apart silently.
 
-Task sequencing: [tasks.md](../../tasks.md). Issue backlog:
-[docs/tickets.md](../../docs/tickets.md).
+Tracker: GitHub Issues (see [docs/tickets.md](../../docs/tickets.md) for
+bodies). Active P0 skills: `website-deploy-cf`, `website-remote-dev`,
+`website-backend-prep`.
