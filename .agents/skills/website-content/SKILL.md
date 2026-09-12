@@ -14,12 +14,14 @@ modules**, not fetched from the API. Only blog posts are backend-driven today.
   exported constants, imported directly into components
   (`components/AboutSection.jsx`).
 - Inline arrays inside components, e.g.:
-  - `components/AnnouncementCarousel.jsx` → `CARDS` (title/desc)
   - `components/PartnersSection.jsx` → `PARTNER_COUNT` (just a count, no data yet)
   - `components/about/OfficersSection.jsx` → `OFFICERS` (title, featured flag)
   - similar patterns likely in `AdvisersSection.jsx`, `ExecutivesSection.jsx`,
     `CommitteesSection.jsx` — check each file for its local data array before
     adding a new one elsewhere.
+  - `components/AnnouncementCarousel.jsx` is **not** static on main — it
+    fetches `/api/blogs` and renders the newest 3 posts (see "Backend-driven"
+    below; PR #34 points it at a dedicated `/api/announcements`).
 
 ## Backend-driven content (the exception)
 

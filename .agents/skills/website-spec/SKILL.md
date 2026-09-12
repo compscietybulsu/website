@@ -61,11 +61,12 @@ message itself changed unexpectedly.
 
 ## 4. Lockfile hygiene
 
-This repo currently has both `package-lock.json` (tracked) and a `pnpm-lock.yaml`
-in flux — see `website-review` skill. When you run `pnpm install`, do not also
-regenerate `package-lock.json`; prefer removing npm lockfiles in favor of pnpm's
-once the team confirms the switch, and call this out explicitly in your PR
-description rather than silently deleting files.
+On main, only `server/package-lock.json` remains tracked (legacy server); root
+`package-lock.json` is gone and root + `server/pnpm-lock.yaml` are tracked. PR
+#37 removes `server/package-lock.json` entirely. When you run `pnpm install`,
+do not also regenerate `package-lock.json`; prefer removing npm lockfiles in
+favor of pnpm's, and call this out explicitly in your PR description rather
+than silently deleting files.
 
 ## 5. Reporting drift you find but don't fix
 
