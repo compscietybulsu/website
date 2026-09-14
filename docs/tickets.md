@@ -1,16 +1,29 @@
 # docs/tickets.md — Issue backlog
 
-GitHub-ready tickets, one section each. Copy a section's title + body
-straight into a new issue. Org labels already exist in the repo — use the
-labels below as-is; only create a new label if a ticket genuinely needs one
-that isn't already listed.
+GitHub Issues are the tracker of record. This file keeps historical issue
+bodies, labels, and `T0xx` cross-references. There is no `tasks.md`.
 
-Cross-reference: `SPEC.md` for the contract, `tasks.md` for execution order
-(`T0xx` IDs below match `tasks.md`).
+**Active P0** (see `AGENTS.md`): Cloudflare deploy · remote dev · backend prep.
+Skills: `website-deploy-cf`, `website-remote-dev`, `website-backend-prep`.
+
+Milestones: [Priority](https://github.com/compscietybulsu/website/milestone/5) ·
+[Scaffolding](https://github.com/compscietybulsu/website/milestone/1) ·
+[MVP](https://github.com/compscietybulsu/website/milestone/2) ·
+[V1](https://github.com/compscietybulsu/website/milestone/3) ·
+[Future](https://github.com/compscietybulsu/website/milestone/4).
+
+P0 issues (milestone Priority):
+- [#24](https://github.com/compscietybulsu/website/issues/24) Cloudflare Workers / OpenNext (+ Pages where static)
+- [#26](https://github.com/compscietybulsu/website/issues/26) Remote / Codespaces Dev Containers
+- [#27](https://github.com/compscietybulsu/website/issues/27) Backend prep for public frontend
+
+Also: [#6](https://github.com/compscietybulsu/website/issues/6) Dual-agent skills (closed)
 
 ---
-
 ## 1. Agent scaffolding landed (meta)
+
+**Issue:** [#5](https://github.com/compscietybulsu/website/issues/5)
+
 
 **Labels:** `type:chore`, `area:agents`, `priority:p2`, `size:S`
 
@@ -21,20 +34,23 @@ Problem: the repo had no `AGENTS.md`/`SPEC.md`/task tracking, so contributors
 guardrails.
 
 Acceptance criteria:
-- [ ] `AGENTS.md`, `SPEC.md`, `tasks.md`, `docs/tickets.md` exist and are
-  linked from `README.md`
-- [ ] `CLAUDE.md`, `.kiro/steering/*`, `.cursor/rules/website.mdc`,
+- [x] `AGENTS.md`, `SPEC.md`, `docs/tickets.md` exist and are linked from
+  `README.md` (`tasks.md` removed on purpose — GitHub Issues are the tracker)
+- [x] `CLAUDE.md`, `.kiro/steering/*`, `.cursor/rules/website.mdc`,
   `.agy/AGENTS.md` all point back to `AGENTS.md`/`SPEC.md`
-- [ ] No SSH/GPG/git-profile personal tooling is documented in any
+- [x] No SSH/GPG/git-profile personal tooling is documented in any
   committed file
 
 SPEC refs: `SPEC.md` §1–§6 (whole file).
 
-Suggested files: `AGENTS.md`, `SPEC.md`, `tasks.md`, `docs/tickets.md`.
+Suggested files: `AGENTS.md`, `SPEC.md`, `docs/tickets.md`.
 
 ---
 
 ## 2. Contact page missing — fix the 404 or unlink it
+
+**Issue:** [#10](https://github.com/compscietybulsu/website/issues/10)
+
 
 **Labels:** `type:fix`, `area:frontend`, `priority:p0`, `size:S`
 
@@ -58,6 +74,9 @@ Suggested files: `app/contact/page.js` (new), `components/Navbar.jsx`,
 
 ## 3. Hero copy is placeholder text
 
+**Issue:** [#11](https://github.com/compscietybulsu/website/issues/11)
+
+
 **Labels:** `type:content`, `area:frontend`, `priority:p1`, `size:S`
 
 **Body**
@@ -78,6 +97,9 @@ Suggested files: `components/Hero.jsx`. Task: `T008`.
 ---
 
 ## 4. Add `.env.example` files for frontend and backend
+
+**Issue:** [#3](https://github.com/compscietybulsu/website/issues/3)
+
 
 **Labels:** `type:docs`, `area:ops`, `priority:p0`, `size:S`
 
@@ -105,6 +127,9 @@ Suggested files: `.env.example` (new), `server/.env.example` (new). Task:
 
 ## 5. Lockfile and package-manager cleanup (pnpm only)
 
+**Issue:** [#7](https://github.com/compscietybulsu/website/issues/7)
+
+
 **Labels:** `type:chore`, `area:ops`, `priority:p0`, `size:S`
 
 **Body**
@@ -131,6 +156,9 @@ Suggested files: `pnpm-lock.yaml`, `server/pnpm-lock.yaml`,
 
 ## 6. Officers/Executives/Advisers/Committees content is hardcoded
 
+**Issue:** [#12](https://github.com/compscietybulsu/website/issues/12)
+
+
 **Labels:** `type:content`, `area:frontend`, `priority:p1`, `size:M`
 
 **Body**
@@ -156,6 +184,9 @@ Suggested files: `components/about/*.jsx`, `lib/aboutContent.js`. Task:
 
 ## 7. Partners section uses placeholder circles
 
+**Issue:** [#13](https://github.com/compscietybulsu/website/issues/13)
+
+
 **Labels:** `type:content`, `area:frontend`, `priority:p2`, `size:S`
 
 **Body**
@@ -176,6 +207,9 @@ Suggested files: `components/PartnersSection.jsx`, `public/`. Task: `T009`.
 ---
 
 ## 8. Announcements are hardcoded — need a real API
+
+**Issue:** [#14](https://github.com/compscietybulsu/website/issues/14)
+
 
 **Labels:** `type:feat`, `area:backend`, `priority:p1`, `size:M`
 
@@ -206,6 +240,9 @@ UI). Task: `T011`.
 
 ## 9. Admin auth hardening
 
+**Issue:** [#15](https://github.com/compscietybulsu/website/issues/15)
+
+
 **Labels:** `type:fix`, `area:backend`, `priority:p1`, `size:M`
 
 **Body**
@@ -233,6 +270,9 @@ Suggested files: `server/routes/auth.js`, `server/middleware/auth.js`,
 
 ## 10. `AdminGuard` doesn't validate token expiry
 
+**Issue:** [#16](https://github.com/compscietybulsu/website/issues/16)
+
+
 **Labels:** `type:fix`, `area:frontend`, `priority:p0`, `size:S`
 
 **Body**
@@ -256,6 +296,9 @@ Suggested files: `components/admin/AdminGuard.jsx`, `lib/auth.js`. Task:
 ---
 
 ## 11. Admin blog edit route path is inconsistent
+
+**Issue:** [#17](https://github.com/compscietybulsu/website/issues/17)
+
 
 **Labels:** `type:fix`, `area:frontend`, `priority:p0`, `size:S`
 
@@ -283,6 +326,9 @@ Suggested files: `app/admin/dashboard/page.js`,
 
 ## 12. Blog CRUD polish: server-side pagination + validation
 
+**Issue:** [#18](https://github.com/compscietybulsu/website/issues/18)
+
+
 **Labels:** `type:feat`, `area:backend`, `priority:p2`, `size:M`
 
 **Body**
@@ -309,6 +355,9 @@ Suggested files: `server/routes/blogs.js`, `app/blog/page.js`,
 
 ## 13. README rewrite for pnpm + full-stack run instructions
 
+**Issue:** [#4](https://github.com/compscietybulsu/website/issues/4)
+
+
 **Labels:** `type:docs`, `area:ops`, `priority:p0`, `size:S`
 
 **Body**
@@ -331,6 +380,9 @@ Suggested files: `README.md`. Task: `T004`.
 ---
 
 ## 14. Add CI smoke tests
+
+**Issue:** [#8](https://github.com/compscietybulsu/website/issues/8)
+
 
 **Labels:** `type:chore`, `area:ops`, `priority:p1`, `size:M`
 
@@ -356,6 +408,9 @@ Task: `T014`.
 
 ## 15. Deploy docs (env vars, CORS, MongoDB Atlas, Cloudinary)
 
+**Issue:** [#19](https://github.com/compscietybulsu/website/issues/19)
+
+
 **Labels:** `type:docs`, `area:ops`, `priority:p1`, `size:S`
 
 **Body**
@@ -380,6 +435,9 @@ Suggested files: `docs/deploy.md` (new), `README.md`. Task: `T015`.
 
 ## 16. Replace 404 page placeholder illustration
 
+**Issue:** [#20](https://github.com/compscietybulsu/website/issues/20)
+
+
 **Labels:** `type:content`, `area:frontend`, `priority:p2`, `size:S`
 
 **Body**
@@ -398,6 +456,9 @@ Suggested files: `app/not-found.js`. Task: `T016`.
 ---
 
 ## 17. Decide root/server pnpm workspace strategy
+
+**Issue:** [#21](https://github.com/compscietybulsu/website/issues/21)
+
 
 **Labels:** `type:chore`, `area:ops`, `priority:p2`, `size:S`
 
@@ -424,6 +485,9 @@ Task: related to `T005`.
 ---
 
 ## 18. Podman-based local dev environment (optional, future)
+
+**Issue:** [#22](https://github.com/compscietybulsu/website/issues/22)
+
 
 **Labels:** `type:chore`, `area:ops`, `priority:p2`, `size:M`
 
