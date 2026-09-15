@@ -62,6 +62,16 @@ pnpm dev
 
 Leave `NEXT_PUBLIC_API_URL` unset so the browser calls `/api` on the same origin.
 
+### Optional: Containerized Local Database (Podman)
+
+If you are running the legacy Express + MongoDB server or need a local MongoDB instance, you can use **Podman** (`podman-compose.yml` or native Quadlet units):
+
+```bash
+podman compose up -d
+```
+
+See [`docs/local-dev.md`](./docs/local-dev.md) for Podman Compose (`~c`), systemd service (`~s`), and Quadlet (`~q`) setups.
+
 ## Production deploy
 
 ```bash
