@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import GradientPillButton from "./ui/GradientPillButton";
 import { useCachedFetch } from "@/lib/useCachedFetch";
 
-const MAX_ITEMS = 3;
+const MAX_ITEMS = 5;
 const AUTO_SCROLL_MS = 5000;
 
 function excerpt(text, length = 120) {

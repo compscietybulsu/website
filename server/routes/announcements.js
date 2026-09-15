@@ -9,13 +9,16 @@ router.get("/", async (req, res) => {
   res.json(announcements);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const announcement = await Announcement.findById(req.params.id);
-    if (!announcement) return res.status(404).json({ message: "Announcement not found" });
+    if (!announcement) return res.status(404).json({ message: "Not found" });
     res.json(announcement);
   } catch (err) {
-    res.status(400).json({ message: "Invalid announcement id" });
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return res.status(400).json({ message: "Invalid announcement ID" });
+    }
+    next(err); // real DB/server errors -> central error handler -> 500
   }
 });
 

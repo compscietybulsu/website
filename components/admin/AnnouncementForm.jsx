@@ -39,8 +39,14 @@ export default function AnnouncementForm({ initialData, announcementId }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-2xl">
       <div>
-        <label className="block text-sm font-heading font-semibold text-white mb-2">Title</label>
+        <label
+          htmlFor="announcement-title"
+          className="block text-sm font-heading font-semibold text-white mb-2"
+        >
+          Title
+        </label>
         <input
+          id="announcement-title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
@@ -49,8 +55,15 @@ export default function AnnouncementForm({ initialData, announcementId }) {
       </div>
 
       <div>
-        <label className="block text-sm font-heading font-semibold text-white mb-2">Description</label>
+        <label
+          htmlFor="announcement-description"
+          className="block text-sm font-heading font-semibold text-white mb-2"
+        >
+          Description
+        </label>
         <textarea
+          id="announcement-description"
+          name="content"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
@@ -62,10 +75,16 @@ export default function AnnouncementForm({ initialData, announcementId }) {
       <ImageUploader value={image} onChange={setImage} label="Announcement Image" />
 
       <div>
-        <label className="block text-sm font-heading font-semibold text-white mb-2">
+        <label
+          htmlFor="announcement-link"
+          className="block text-sm font-heading font-semibold text-white mb-2"
+        >
           Link (optional — internal path like /blog/123, or an external URL)
         </label>
         <input
+          id="announcement-link"
+          name="link"
+          type="text"
           value={link}
           onChange={(e) => setLink(e.target.value)}
           placeholder="/events or https://forms.gle/..."

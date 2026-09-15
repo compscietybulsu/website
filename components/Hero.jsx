@@ -13,13 +13,17 @@ export default function Hero() {
           CompSciety
         </h1>
         <p className="mt-4 max-w-md text-green-300/80 text-sm sm:text-base">
-          This is the official Computer Science Society webpage. This text box is solely for
-          placeholder description or information about stuff.
+          Welcome to the Official Bulacan State University Computer Science Society! We exist to build a strong, united, and future-ready generation of Computer Science students. Join us today!
         </p>
         <div className="mt-8 sm:mt-0 sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2">
-          <button className="rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-8 py-4 shadow-xl shadow-green-950/40 hover:opacity-90 hover:scale-105 active:scale-95 transition-all duration-200">
-            Sync Up!
-          </button>
+        <a
+          href="https://forms.gle/KPRoYSA5mZrkbj8J6"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold px-8 py-4 shadow-xl shadow-green-950/40 ring-4 ring-green-500 transition-all duration-300 hover:scale-105 hover:ring-green-300 hover:shadow-green-500/60 active:scale-95"
+        >
+          Sync Up!
+        </a>
         </div>
       </div>
     </section>

@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
 const MARQUEE_THRESHOLD = 6;
+// Reserve enough headroom above the clipped track for PartnerCircle's hover
+// card (image + name + detail text) so it never gets cut off by the
+// horizontal overflow clip. Bump this if the card's content grows.
+const HOVER_CARD_HEADROOM = 256; // px, Tailwind's `-top-64`
 
 function PartnerCircle({ partner }) {
   return (
@@ -72,21 +76,29 @@ export default function PartnersSection() {
           !error &&
           partners.length > 0 &&
           (shouldScroll ? (
+            // The "stage" keeps the section's normal-flow height equal to
+            // just the row of circles (same footprint as before). The actual
+            // clipping box is absolutely positioned inside it and extends
+            // upward by HOVER_CARD_HEADROOM, so a popped-up hover card still
+            // lands inside the clip region instead of being cut off by the
+            // horizontal overflow constraint.
             <div
-              className="overflow-hidden"
+              className="relative h-16"
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
-              <div
-                className="flex items-center gap-8 sm:gap-12 partners-marquee-track w-max"
-                style={{
-                  animationDuration: `${partners.length * 3}s`,
-                  animationPlayState: isPaused ? "paused" : "running",
-                }}
-              >
-                {track.map((partner, i) => (
-                  <PartnerCircle key={`${partner._id}-${i}`} partner={partner} />
-                ))}
+              <div className="absolute inset-x-0 bottom-0 -top-64 overflow-hidden flex items-end">
+                <div
+                  className="flex items-center gap-8 sm:gap-12 partners-marquee-track w-max"
+                  style={{
+                    animationDuration: `${partners.length * 3}s`,
+                    animationPlayState: isPaused ? "paused" : "running",
+                  }}
+                >
+                  {track.map((partner, i) => (
+                    <PartnerCircle key={`${partner._id}-${i}`} partner={partner} />
+                  ))}
+                </div>
               </div>
             </div>
           ) : (

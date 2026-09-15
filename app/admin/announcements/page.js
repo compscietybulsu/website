@@ -67,8 +67,8 @@ function AnnouncementsContent() {
               </div>
             </div>
           ))}
-          {!loading && announcements.length === 0 && (
-            <p className="text-green-200/60 text-sm">No announcements yet.</p>
+          {!loading && !error && announcements.length === 0 && (
+            <p className="text-green-200/60 text-sm\">No announcements yet.</p>
           )}
         </div>
       </div>
