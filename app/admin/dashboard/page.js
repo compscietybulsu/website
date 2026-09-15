@@ -6,25 +6,49 @@ import { api } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import AdminGuard from "@/components/admin/AdminGuard";
 import AdminNav from "@/components/admin/AdminNav";
+import Pagination from "@/components/blog/Pagination";
+
+const PAGE_SIZE = 10;
 
 function DashboardContent() {
   const [blogs, setBlogs] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
+    let ignore = false;
     api
-      .get("/api/blogs")
-      .then(setBlogs)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+      .get(`/api/blogs?page=${page}&limit=${PAGE_SIZE}`)
+      .then((res) => {
+        if (ignore) return;
+        if (Array.isArray(res)) {
+          setBlogs(res);
+          setTotalPages(Math.max(1, Math.ceil(res.length / PAGE_SIZE)));
+        } else {
+          setBlogs(res?.items ?? []);
+          setTotalPages(res?.totalPages ?? 1);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) setError(err.message);
+      })
+      .finally(() => {
+        if (!ignore) setLoading(false);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [page, reloadKey]);
 
   async function handleDelete(id) {
     if (!confirm("Delete this blog post?")) return;
     try {
       await api.delete(`/api/blogs/${id}`, { token: getToken() });
-      setBlogs((prev) => prev.filter((b) => b._id !== id));
+      setReloadKey((k) => k + 1);
     } catch (err) {
       alert(err.message);
     }
@@ -71,6 +95,12 @@ function DashboardContent() {
             <p className="text-green-200/60 text-sm">No blog posts yet.</p>
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="mt-8">
+            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+          </div>
+        )}
       </div>
     </div>
   );
