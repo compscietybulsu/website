@@ -4,3 +4,8 @@
 # adopt a real monorepo (see issue #21).
 packages:
   - "."
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  workerd: true
