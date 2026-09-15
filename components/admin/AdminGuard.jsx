@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getToken } from "@/lib/auth";
+import { getValidToken } from "@/lib/auth";
 
 export default function AdminGuard({ children }) {
   const router = useRouter();
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    if (!getToken()) {
+    if (!getValidToken()) {
       router.replace("/admin");
       return;
     }
