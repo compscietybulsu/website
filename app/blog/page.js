@@ -25,11 +25,14 @@ function BlogCardSkeleton() {
 }
 
 export default function BlogPage() {
-  const { data: blogs, loading } = useCachedFetch("blogs", "/api/blogs");
   const [page, setPage] = useState(1);
+  const { data, loading } = useCachedFetch(
+    `blogs_page_${page}`,
+    `/api/blogs?page=${page}&limit=${PAGE_SIZE}`
+  );
 
-  const totalPages = Math.max(1, Math.ceil(blogs.length / PAGE_SIZE));
-  const pageBlogs = blogs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const blogs = Array.isArray(data) ? data : data?.items ?? [];
+  const totalPages = data?.totalPages ?? Math.max(1, Math.ceil(blogs.length / PAGE_SIZE));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#020806] via-[#0a2818] to-[#0d3320]">
@@ -51,13 +54,15 @@ export default function BlogPage() {
             <p className="text-green-200/70">No blog posts yet — check back soon.</p>
           )}
 
-          {pageBlogs.map((blog, i) => (
+          {blogs.map((blog, i) => (
             <FadeIn key={blog._id} delay={i * 80}>
               <BlogCard blog={blog} />
             </FadeIn>
           ))}
 
-          <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+          {totalPages > 1 && (
+            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+          )}
         </div>
       </section>
 
