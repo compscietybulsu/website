@@ -1,0 +1,18 @@
+[Unit]
+Description=CompSciety Local Dev MongoDB
+After=network-online.target
+
+[Container]
+Image=docker.io/library/mongo:7.0
+ContainerName=compsciety-mongo
+PublishPort=27017:27017
+Volume=compsciety-mongo.volume:/data/db
+Environment=MONGO_INITDB_ROOT_USERNAME=admin
+Environment=MONGO_INITDB_ROOT_PASSWORD=devpassword
+Environment=MONGO_INITDB_DATABASE=compsciety
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
