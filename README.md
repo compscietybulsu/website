@@ -18,6 +18,13 @@ See [`docs/deploy.md`](./docs/deploy.md), [`AGENTS.md`](./AGENTS.md), and
 
 Package manager: **pnpm** only.
 
+## Workspace
+
+Root is a **single-package pnpm workspace** (`pnpm-workspace.yaml`, `packages:
+["."]`) — required for Cloudflare Workers Builds. `server/` is deliberately
+**not** in the workspace: it is legacy, so it installs and runs independently
+(`pnpm --dir server install`). See [`SPEC.md`](./SPEC.md) §2 for the decision.
+
 ## Prerequisites
 
 - Node.js 20+
