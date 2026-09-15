@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { randomUUID } from "node:crypto";
 import { verifyAdminToken } from "@/lib/apiAuth";
 
 // D1 + JWT need the Workers runtime, not the Node runtime.
@@ -39,7 +38,7 @@ export async function POST(request) {
   }
 
   const { env } = getCloudflareContext();
-  const id = randomUUID();
+  const id = crypto.randomUUID();
   const now = new Date().toISOString();
   const content = typeof body.content === "string" ? body.content : "";
   const image = typeof body.image === "string" ? body.image : "";
