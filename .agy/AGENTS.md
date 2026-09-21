@@ -1,4 +1,5 @@
 # agy entry point
 
-This repo's real agent guidance is at [`AGENTS.md`](../AGENTS.md) in the
-repo root. Read it first. Product contract is [`SPEC.md`](../SPEC.md).
+This repository's central agent hub is [`AGENTS.md`](../AGENTS.md) in the repo root — read it first.
+The product contract is [`SPEC.md`](../SPEC.md).
+Canonical project skills live in [`.agents/skills/`](../.agents/skills).
