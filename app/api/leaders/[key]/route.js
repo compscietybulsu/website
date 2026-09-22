@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { isAuthError, requireAdmin } from "@/lib/auth-server";
 import { getLeader, upsertLeader } from "@/lib/db";
 
-export const runtime = "edge";
-
 const LEADER_KEYS = [
   "president",
   "chief-of-staff",

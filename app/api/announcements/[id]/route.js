@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { verifyAdminToken } from "@/lib/apiAuth";
 
-export const runtime = "edge";
-
 /**
  * GET /api/announcements/:id — public, no auth. 404 if not found.
  */

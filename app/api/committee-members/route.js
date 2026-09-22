@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { isAuthError, requireAdmin } from "@/lib/auth-server";
 import { createCommitteeMember, listCommitteeMembers } from "@/lib/db";
 
-export const runtime = "edge";
-
 const COMMITTEE_SLUGS = [
   "finance",
   "secretary",
