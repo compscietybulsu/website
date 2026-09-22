@@ -43,7 +43,7 @@ export default function AnnouncementCarousel() {
     const fromAnnouncements = announcements.map((a) => ({
       id: `announcement-${a._id}`,
       title: a.title,
-      text: a.description,
+      text: a.content,
       image: a.image,
       href: a.link || null,
       isExternal: isExternalLink(a.link),

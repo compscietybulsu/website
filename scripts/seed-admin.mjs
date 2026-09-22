@@ -13,8 +13,15 @@
  */
 import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { readFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import {
+  readFileSync,
+  existsSync,
+  writeFileSync,
+  mkdtempSync,
+  rmSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import bcrypt from "bcryptjs";
 
 function loadDevVars() {
@@ -71,18 +78,41 @@ INSERT INTO admins (id, username, password_hash)
 VALUES ('${esc(id)}', '${esc(username)}', '${esc(hash)}');
 `;
 
-const args = [
-  "exec",
+// Run Wrangler's JS entry with the current Node instead of spawning `pnpm`.
+// On Windows `pnpm` is a .cmd shim, which execFileSync can't launch without a
+// shell (ENOENT), and a shell would mangle the SQL quoting.
+const wranglerBin = resolve(
+  process.cwd(),
+  "node_modules",
   "wrangler",
-  "d1",
-  "execute",
-  "website-db",
-  "--command",
-  sql,
-];
-if (local) args.push("--local");
-else args.push("--remote");
+  "bin",
+  "wrangler.js"
+);
+if (!existsSync(wranglerBin)) {
+  console.error("Wrangler not found. Run `pnpm install` first.");
+  process.exit(1);
+}
+
+const tmpDir = mkdtempSync(join(tmpdir(), "seed-admin-"));
+const sqlFile = join(tmpDir, "seed.sql");
+writeFileSync(sqlFile, sql);
 
 console.log(`Seeding admin "${username}" (${local ? "local" : "remote"} D1)...`);
-execFileSync("pnpm", args, { stdio: "inherit" });
+try {
+  execFileSync(
+    process.execPath,
+    [
+      wranglerBin,
+      "d1",
+      "execute",
+      "website-db",
+      local ? "--local" : "--remote",
+      "--file",
+      sqlFile,
+    ],
+    { stdio: "inherit" }
+  );
+} finally {
+  rmSync(tmpDir, { recursive: true, force: true });
+}
 console.log("Done.");

@@ -10,7 +10,7 @@ import ImageUploader from "./ImageUploader";
 export default function AnnouncementForm({ initialData, announcementId }) {
   const router = useRouter();
   const [title, setTitle] = useState(initialData?.title || "");
-  const [description, setDescription] = useState(initialData?.description || "");
+  const [content, setContent] = useState(initialData?.content || "");
   const [image, setImage] = useState(initialData?.image || "");
   const [link, setLink] = useState(initialData?.link || "");
   const [saving, setSaving] = useState(false);
@@ -22,7 +22,7 @@ export default function AnnouncementForm({ initialData, announcementId }) {
     setError("");
     try {
       const token = getToken();
-      const payload = { title, description, image, link };
+      const payload = { title, content, image, link };
       if (announcementId) {
         await api.put(`/api/announcements/${announcementId}`, payload, { token });
       } else {
@@ -64,8 +64,8 @@ export default function AnnouncementForm({ initialData, announcementId }) {
         <textarea
           id="announcement-description"
           name="content"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           required
           rows={5}
           className="w-full rounded-lg bg-[#0d2818] border border-green-800/50 text-white px-4 py-2.5 text-sm focus:outline-none focus:border-green-400"

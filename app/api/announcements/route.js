@@ -2,9 +2,6 @@ import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { verifyAdminToken } from "@/lib/apiAuth";
 
-// D1 + JWT need the Workers runtime, not the Node runtime.
-export const runtime = "edge";
-
 /**
  * GET /api/announcements — public, no auth.
  * Returns all announcements, newest first (same shape as GET /api/blogs).
