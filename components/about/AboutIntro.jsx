@@ -1,4 +1,6 @@
 import { ABOUT_PARAGRAPH } from "@/lib/aboutContent";
+import Image from 'next/image';
+import logo from "../../assets/logo.png"
 
 export default function AboutIntro() {
   return (
@@ -9,8 +11,15 @@ export default function AboutIntro() {
         </h1>
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <p className="text-green-200/80 text-sm sm:text-base leading-relaxed">{ABOUT_PARAGRAPH}</p>
-          {/* TODO: swap for a real photo */}
-          <div className="w-full aspect-[4/3] rounded-2xl bg-gray-200" />
+          <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden">
+            <Image
+              src={logo}
+              alt="CompSciety Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+          {/* <div className="w-full aspect-[4/3] rounded-2xl bg-gray-200" /> */}
         </div>
       </div>
     </section>

@@ -93,7 +93,7 @@ export default function ContactPage() {
                 </p>
               </div>
               <a
-                href="https://www.facebook.com/compscietybulsu"
+                href="https://www.facebook.com/compscietybulsu2025"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 sm:mt-0 inline-block shrink-0 rounded-full bg-gradient-to-r from-blue-500 to-green-400 text-white font-heading font-bold text-sm px-6 py-3 shadow-lg hover:opacity-90 transition-opacity"
