@@ -17,7 +17,10 @@ export default function LeaderForm({ leaderKey, roleLabel, initialData }) {
     // Sync state whenever initialData changes (fixes the empty form / race condition bug)
     useEffect(() => {
         if (initialData) {
+            // The form must initialize from server-provided data after mount.
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setName(initialData.name || "");
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setPhoto(initialData.photo || "");
         }
     }, [initialData]);

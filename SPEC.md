@@ -101,6 +101,36 @@ R2; returns `{ url: "/api/media/...", key }`. Frontend: `lib/media.js`.
 }
 ```
 
+**Event** (D1 `events`; JSON uses Mongo-compatible `_id`)
+```js
+{
+  _id: String,
+  title: String,
+  description: String, // required, short summary
+  content: String,     // optional long-form body
+  image: String,       // default ""
+  location: String,    // default ""
+  link: String,        // optional external registration URL
+  startDate: Date,
+  endDate: Date,       // same as startDate for single-day events
+  status: "ongoing" | "upcoming" | "done",
+  featured: Boolean,   // default false
+  createdAt, updatedAt
+}
+```
+
+Single-day events have `endDate === startDate`.
+
+**Event endpoints** (`app/api/events`, D1 `events`)
+
+| Method | Path | Auth | Body | Response |
+|---|---|---|---|---|
+| GET | `/api/events` | none | `?status=ongoing|upcoming|done&featured=1` | `200` array of Event, newest first |
+| POST | `/api/events` | ****** | `{ title, description, content?, image?, location?, link?, startDate, endDate, status?, featured? }` | `201` Event |
+| GET | `/api/events/:id` | none | — | `200` Event, `404` if not found |
+| PUT | `/api/events/:id` | ****** | same | `200` Event, `404` |
+| DELETE | `/api/events/:id` | ****** | — | `200 { message }`, `404` |
+
 **Admin** (`server/models/Admin.js`)
 ```js
 {
@@ -142,11 +172,16 @@ components; announcements reuse the blogs API as a stand-in (see §4).
 | `/about` | `app/about/page.js` | Live — Intro, Mission/Vision, Advisers, Officers, Executives, Committees |
 | `/blog` | `app/blog/page.js` | Live — paginated list from `GET /api/blogs` |
 | `/blog/:id` | `app/blog/[id]/page.js` | Live — single post from `GET /api/blogs/:id` |
+| `/events` | `app/events/page.js` | Planned — public list of events |
+| `/events/:id` | `app/events/[id]/page.js` | Planned — single event detail |
 | `/contact` | — | **No standalone page.** Nav/Footer "Contact" links anchor to `#site-footer`, which has a "Contact Us" block — no 404. Issue #10 closed via unlink. |
 | `/admin` | `app/admin/page.js` | Live — login form, posts to `/api/auth/login` |
 | `/admin/dashboard` | `app/admin/dashboard/page.js` | Live — list/delete blogs, behind `AdminGuard` |
 | `/admin/blogs/new` | `app/admin/blogs/new/page.js` | Live — create blog form |
 | `/admin/blogs/[id]/edit` | `app/admin/blogs/[id]/edit/page.js` | Live — edit blog form; dashboard "Edit" links point here (paths agree — issue #17 closed) |
+| `/admin/events` | `app/admin/events/page.js` | Planned — list/manage events |
+| `/admin/events/new` | `app/admin/events/new/page.js` | Planned — create event |
+| `/admin/events/[id]/edit` | `app/admin/events/[id]/edit/page.js` | Planned — edit event |
 | `/admin/partners` | `app/admin/partners/page.js` | Live — list partners |
 | `/admin/partners/new` | `app/admin/partners/new/page.js` | Live — create partner |
 | `/admin/partners/[id]/edit` | `app/admin/partners/[id]/edit/page.js` | Live — edit partner |

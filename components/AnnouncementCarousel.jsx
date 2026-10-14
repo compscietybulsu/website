@@ -25,13 +25,17 @@ export default function AnnouncementCarousel() {
     "announcements",
     "/api/announcements"
   );
-  const loading = blogsLoading || announcementsLoading;
+  const { data: events, loading: eventsLoading } = useCachedFetch(
+    "events-featured",
+    "/api/events?featured=1"
+  );
+  const loading = blogsLoading || announcementsLoading || eventsLoading;
 
   // Merge both sources into one shape, newest first, capped at MAX_ITEMS.
   // A blog post needs zero extra admin work to show up here — it just
   // appears alongside any dedicated Announcements automatically.
   const items = useMemo(() => {
-    const fromBlogs = blogs.map((b) => ({
+    const fromBlogs = (Array.isArray(blogs) ? blogs : []).map((b) => ({
       id: `blog-${b._id}`,
       title: b.title,
       text: b.content,
@@ -40,7 +44,7 @@ export default function AnnouncementCarousel() {
       isExternal: false,
       createdAt: b.createdAt,
     }));
-    const fromAnnouncements = announcements.map((a) => ({
+    const fromAnnouncements = (Array.isArray(announcements) ? announcements : []).map((a) => ({
       id: `announcement-${a._id}`,
       title: a.title,
       text: a.description,
@@ -49,10 +53,24 @@ export default function AnnouncementCarousel() {
       isExternal: isExternalLink(a.link),
       createdAt: a.createdAt,
     }));
-    return [...fromBlogs, ...fromAnnouncements]
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0, MAX_ITEMS);
-  }, [blogs, announcements]);
+    const fromEvents = (Array.isArray(events) ? events : [])
+      .filter((e) => e.status !== "done")
+      .map((e) => ({
+        id: `event-${e._id}`,
+        title: e.title,
+        text: e.description || e.content,
+        image: e.image,
+        href: `/events/${e._id}`,
+        isExternal: false,
+        createdAt: e.createdAt,
+      }));
+
+    const rest = [...fromBlogs, ...fromAnnouncements].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    // Featured events are pinned first (soonest first, as the API returns them).
+    return [...fromEvents, ...rest].slice(0, MAX_ITEMS);
+  }, [blogs, announcements, events]);
 
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -155,9 +173,8 @@ export default function AnnouncementCarousel() {
                   {items.map((item, i) => (
                     <span
                       key={item.id}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                        i === safeIndex ? "bg-white" : "bg-white/40"
-                      }`}
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${i === safeIndex ? "bg-white" : "bg-white/40"
+                        }`}
                     />
                   ))}
                 </div>
