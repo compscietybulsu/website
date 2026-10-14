@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Blog", href: "/blog" },
+  { label: "Events", href: "/events" },
   { label: "Contact", href: "#site-footer" },
 ];
 
@@ -45,7 +46,7 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        
+
         <div>
           <h5 className="font-heading font-bold text-white mb-4">Navigation</h5>
           <ul className="space-y-2 text-sm text-green-200/70">

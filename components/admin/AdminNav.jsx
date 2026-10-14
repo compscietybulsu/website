@@ -10,6 +10,7 @@ const TABS = [
   { label: "Partners", href: "/admin/partners" },
   { label: "Executives", href: "/admin/leaders" },
   { label: "Committees", href: "/admin/committees" },
+  { label: "Events", href: "/admin/events" },
 ];
 
 export default function AdminNav() {
@@ -23,7 +24,7 @@ export default function AdminNav() {
 
   return (
     <div className="flex items-center justify-between mb-8">
-      <div className="flex gap-6">
+      <div className="flex flex-wrap gap-x-6 gap-y-2">
         {TABS.map((tab) => (
           <Link
             key={tab.href}
