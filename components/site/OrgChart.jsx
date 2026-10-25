@@ -47,7 +47,7 @@ function Profile({ person, committee, onBack }) {
         </div>
         <div>
           <span className="mono" style={{ color: "var(--blue-soft)" }}>
-            {committee ? `${committee.code} · ${committee.name} Committee` : "CompSciety officer"}
+            {committee ? `${committee.code} · ${committee.name} Committee` : /adviser/i.test(person.role) ? "CompSciety adviser" : "CompSciety officer"}
           </span>
           <h3 id="roster-title">{person.name}</h3>
           <p>{person.role}</p>
