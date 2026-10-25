@@ -84,6 +84,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 /* nav */
 .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 60; padding-block: 12px; }
+.nav-bar.glass { background: rgba(6, 23, 15, 0.92); }
 .nav-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 62px; padding: 0 9px 0 14px; border-radius: 999px; position: relative; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
 .brand img { width: 36px; height: 36px; }
