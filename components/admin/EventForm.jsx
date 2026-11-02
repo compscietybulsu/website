@@ -6,6 +6,7 @@ import Link from "next/link";
 import { api } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import ImageUploader from "./ImageUploader";
+import { KIND_META } from "@/lib/eventUtils";
 
 const INPUT =
     "w-full rounded-lg bg-[#0d2818] border border-green-800/50 text-white px-4 py-2.5 text-sm focus:outline-none focus:border-green-400";
@@ -28,6 +29,7 @@ export default function EventForm({ initialData, eventId }) {
     const [featured, setFeatured] = useState(initialData?.featured || false);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
+    const [kind, setKind] = useState(initialData?.kind || "");
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -73,6 +75,16 @@ export default function EventForm({ initialData, eventId }) {
                     <option value="upcoming">Upcoming</option>
                     <option value="ongoing">Ongoing</option>
                     <option value="done">Done</option>
+                </select>
+            </div>
+
+            <div>
+                <label htmlFor="event-kind" className={LABEL}>Tag (shown on event cards)</label>
+                <select id="event-kind" value={kind} onChange={(e) => setKind(e.target.value)} className={INPUT}>
+                    <option value="">Auto-detect from title and summary</option>
+                    {Object.entries(KIND_META).map(([value, label]) => (
+                        <option key={value} value={value}>{label}</option>
+                    ))}
                 </select>
             </div>
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { MONTHS_SHORT, googleCalendarUrl, relative } from "@/lib/dates";
 import { SERVE } from "@/lib/useEvents";
+import { KIND_META } from "@/lib/eventUtils";
 
 function Status({ event, today }) {
   const s = event.startDate;
@@ -34,7 +35,7 @@ export default function EventCard({ event, today, onShowOnCalendar }) {
       <DateTile event={event} />
       <div className="ev-main">
         <div className="meta">
-          <span className={`tag${SERVE.includes(event.kind) ? " g" : ""}`}>{event.kind}</span>
+          <span className={`tag${SERVE.includes(event.kind) ? " g" : ""}`}>{KIND_META[event.kind] ?? event.kind}</span>
           <Status event={event} today={today} />
         </div>
         <h3>{event.title}</h3>
