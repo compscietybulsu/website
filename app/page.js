@@ -26,8 +26,8 @@ export default function Home() {
               Where <span className="grad-text">CSters</span> code, create, and connect.
             </h1>
             <p className="lede">
-              We&apos;re the Computer Science Society of Bulacan State University, open to every BulSUan from any college or department who wants to learn. Come for
-              the workshops and competitions, and stay for the people.
+              CompSciety brings together Bulacan State University&apos;s brightest minds in technology. As a recognized student organization, we run workshops,
+              competitions and partnerships that help every BulSUan, from any college, grow into a future-ready innovator.
             </p>
             <div className="hero-actions">
               <a className="btn btn-primary" href={SIGNUP_FORM} target="_blank" rel="noopener noreferrer">

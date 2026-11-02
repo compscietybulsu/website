@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { api } from "@/lib/api";
+import { PARTNERS } from "@/lib/content/partners";
 
-// Real partners from the admin panel, padded with "your logo here" slots so the reel always fills.
+// Real partners from the admin panel (bundled list if it fails), padded with "your logo here" slots so the reel always fills.
 const MIN_ITEMS = 8;
 
 function Item({ partner, hidden }) {
@@ -36,7 +37,10 @@ function Item({ partner, hidden }) {
 export default function PartnersReel() {
   const [partners, setPartners] = useState([]);
   useEffect(() => {
-    api.get("/api/partners").then(setPartners).catch(() => setPartners([]));
+    api
+      .get("/api/partners")
+      .then((list) => setPartners(list?.length ? list : PARTNERS))
+      .catch(() => setPartners(PARTNERS));
   }, []);
   const slots = [...partners, ...Array(Math.max(0, MIN_ITEMS - partners.length)).fill(null)];
   return (
