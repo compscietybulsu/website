@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import { initials } from "@/lib/text";
 
 function hue(name) {
@@ -9,16 +6,13 @@ function hue(name) {
   return 150 + (h % 70);
 }
 
-// A broken admin upload falls back to the bundled photo, then to initials.
 export default function Avatar({ person, vacant = false }) {
-  const [failed, setFailed] = useState([]);
   if (vacant) return <div className="av" aria-hidden="true">+</div>;
-  const photo = [person.photo, person.backupPhoto].find((src) => src && !failed.includes(src));
-  if (photo) {
+  if (person.photo) {
     return (
       <div className="av photo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img key={photo} src={photo} alt={person.name} loading="lazy" onError={() => setFailed((f) => [...f, photo])} />
+        <img src={person.photo} alt={person.name} loading="lazy" />
       </div>
     );
   }
