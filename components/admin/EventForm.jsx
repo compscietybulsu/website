@@ -39,6 +39,7 @@ export default function EventForm({ initialData, eventId }) {
             const payload = {
                 title,
                 status,
+                kind,
                 startDate,
                 endDate: multiDay ? endDate : startDate,
                 location,
