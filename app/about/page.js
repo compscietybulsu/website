@@ -5,6 +5,7 @@ import OpenPositions from "@/components/site/OpenPositions";
 import { ABOUT_PARAGRAPH, MISSION_VISION } from "@/lib/aboutContent";
 import { ACADEMIC_YEAR } from "@/lib/content/org";
 import { VALUES } from "@/lib/content/site";
+import HowWeBegan from "@/components/site/HowWeBegan";
 
 export const metadata = {
   title: "About",
@@ -37,6 +38,8 @@ export default function AboutPage() {
             <span className="photo-cta">View the full report on Facebook ↗</span>
           </a>
         </section>
+
+        <HowWeBegan />
 
         <section className="mv">
           {MISSION_VISION.map((item, i) => (
