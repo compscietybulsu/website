@@ -12,7 +12,7 @@ export default function HowWeBegan() {
       <div className="began-grid">
         <figure className="began-photo">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/about/how-we-began.jpg" alt="CompSciety members together at an early society event" />
+          <img src="/assets/HowWeStarted.jpeg" alt="CompSciety members together at an early society event" />
         </figure>
 
         <div className="began-text">

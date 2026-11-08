@@ -793,7 +793,7 @@ body::before {
 }
 
 .post .img {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 5 / 4;
   overflow: hidden;
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(74, 222, 128, 0.25));
   display: grid;
@@ -3598,7 +3598,7 @@ a.cover:hover {
 /* about: how we began (image left, text right, no card background) */
 .began-grid {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
   gap: 40px;
   align-items: start;
 }
@@ -3607,7 +3607,7 @@ a.cover:hover {
   margin: 0;
   border-radius: var(--r-xl);
   overflow: hidden;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 3;
   border: 1px solid var(--edge);
   position: sticky;
   top: 100px;
@@ -3654,6 +3654,5 @@ a.cover:hover {
 
   .began-photo {
     position: static;
-    aspect-ratio: 16 / 10;
   }
 }
