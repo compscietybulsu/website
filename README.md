@@ -27,7 +27,7 @@ Root is a **single-package pnpm workspace** (`pnpm-workspace.yaml`, `packages:
 
 ## Prerequisites
 
-- Node.js 20+
+- Node.js 22+
 - [pnpm](https://pnpm.io/installation)
 - Cloudflare account with Wrangler (`pnpm exec wrangler whoami`)
 - R2 enabled on the account (first-time dashboard toggle)

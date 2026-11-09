@@ -24,7 +24,7 @@ reference / migration only). Do not deploy it for production.
 
 ## Prerequisites
 
-- Node.js 20+
+- Node.js 22+
 - [pnpm](https://pnpm.io/installation) (do not use npm/npx/yarn)
 - Cloudflare account + Wrangler login: `pnpm exec wrangler whoami` → **compscietybulsu**
 - **R2 enabled** on the account (Dashboard → R2 → Enable). Bucket name: `website-media`

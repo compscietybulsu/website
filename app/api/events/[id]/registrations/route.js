@@ -7,6 +7,9 @@ import {
     countGoing, createRegistration, isValidEmail, listRegistrations, markEmailSent, maskName,
 } from "@/lib/registrations";
 
+// worker-mailer imports cloudflare:sockets, so keep this route in the Worker edge bundle.
+export const runtime = "edge";
+
 const MAX_PUBLIC_NAMES = 50;
 
 // GET — public: count + masked names (no emails). With an admin Bearer token: full list.
