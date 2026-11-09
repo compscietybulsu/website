@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import SiteShell from "@/components/site/SiteShell";
+import RsvpPanel from "@/components/events/RsvpPanel";
 import { api } from "@/lib/api";
 import { googleCalendarUrl } from "@/lib/dates";
 import { formatEventDates } from "@/lib/eventUtils";
@@ -62,10 +63,11 @@ export default function EventDetailsPage() {
               </div>
             )}
             <div className="content">{plainText(event.content || event.description)}</div>
+            <RsvpPanel event={event} />
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
               {event.link && (
                 <a className="btn btn-primary btn-sm" href={event.link} target="_blank" rel="noopener noreferrer">
-                  {event.link.includes("facebook.com") ? "View on Facebook ↗" : "Register / more info"}
+                  {event.link.includes("facebook.com") ? "View on Facebook ↗" : "More info"}
                 </a>
               )}
               {today && event.startDate > today && (
