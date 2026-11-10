@@ -27,7 +27,6 @@ export default function EventForm({ initialData, eventId }) {
     const [image, setImage] = useState(initialData?.image || "");
     const [link, setLink] = useState(initialData?.link || "");
     const [featured, setFeatured] = useState(initialData?.featured || false);
-    const [registrationEnabled, setRegistrationEnabled] = useState(initialData?.registrationEnabled || false);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
     const [kind, setKind] = useState(initialData?.kind || "");
@@ -49,7 +48,6 @@ export default function EventForm({ initialData, eventId }) {
                 image,
                 link,
                 featured,
-                registrationEnabled,
             };
             const token = getToken();
             if (eventId) {
@@ -126,18 +124,13 @@ export default function EventForm({ initialData, eventId }) {
             <ImageUploader value={image} onChange={setImage} label="Event Image" />
 
             <div>
-                <label htmlFor="event-link" className={LABEL}>External info link (optional)</label>
-                <input id="event-link" value={link} onChange={(e) => setLink(e.target.value)} placeholder="https://..." className={INPUT} />
+                <label htmlFor="event-link" className={LABEL}>Registration / info link (optional)</label>
+                <input id="event-link" value={link} onChange={(e) => setLink(e.target.value)} placeholder="https://forms.gle/..." className={INPUT} />
             </div>
 
             <label className="flex items-center gap-2 text-sm text-green-200/80">
                 <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} />
                 Highlight in the home page announcements carousel
-            </label>
-
-            <label className="flex items-center gap-2 text-sm text-green-200/80">
-                <input type="checkbox" checked={registrationEnabled} onChange={(e) => setRegistrationEnabled(e.target.checked)} />
-                Enable student registration (RSVP) for this event
             </label>
 
             {error && <p className="text-red-400 text-sm">{error}</p>}
