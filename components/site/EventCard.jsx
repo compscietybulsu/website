@@ -38,7 +38,9 @@ export default function EventCard({ event, today, onShowOnCalendar }) {
           <span className={`tag${SERVE.includes(event.kind) ? " g" : ""}`}>{KIND_META[event.kind] ?? event.kind}</span>
           <Status event={event} today={today} />
         </div>
-        <h3>{event.title}</h3>
+        <h3>
+          <Link href={event.href}>{event.title}</Link>
+        </h3>
         <p>{event.summary}</p>
         <div className="ev-actions">
           <Link href={event.href}>Read more</Link>
