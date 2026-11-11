@@ -1342,6 +1342,17 @@ mark {
   flex: none;
 }
 
+.open-positions-art {
+  width: 110px;
+  height: 96px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  color: #eef6f1;
+  background: linear-gradient(120deg, #3b82f6, #4ade80);
+}
+
 @media (max-width: 760px) {
   .suggest-prev {
     grid-template-columns: 1fr;
@@ -3357,54 +3368,6 @@ button.person:hover {
   .profile-head {
     flex-direction: column;
     text-align: center;
-  }
-}
-
-.openings {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.opening {
-  border-radius: var(--r-md);
-  padding: 16px;
-  display: grid;
-  gap: 8px;
-  align-content: start;
-  border: 1px dashed rgba(255, 209, 102, 0.35);
-  background: rgba(255, 209, 102, 0.03);
-}
-
-.opening .code {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  color: #ffd98a;
-}
-
-.opening b {
-  font-weight: 600;
-}
-
-.opening p {
-  color: var(--muted);
-  font-size: 0.86rem;
-}
-
-.opening .btn {
-  justify-self: start;
-  margin-top: 4px;
-}
-
-@media (max-width: 900px) {
-  .openings {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .openings {
-    grid-template-columns: 1fr;
   }
 }
 

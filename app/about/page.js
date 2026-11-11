@@ -64,7 +64,7 @@ export default function AboutPage() {
           <OrgChart />
         </section>
 
-        {/* <OpenPositions /> */}
+        <OpenPositions />
       </div>
     </SiteShell>
   );
