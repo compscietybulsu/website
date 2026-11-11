@@ -1989,12 +1989,32 @@ a.photo:hover {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
+.marquee-entry {
+  width: max-content;
+  animation: marquee-enter 1.2s ease-out both;
+}
+
+.marquee-entry[data-ready="false"] {
+  visibility: hidden;
+  animation: none;
+}
+
 .track {
   display: flex;
-  gap: 22px;
   width: max-content;
   padding-block: 8px;
-  animation: marquee 40s linear infinite;
+  animation: marquee 18s linear 1.2s infinite;
+}
+
+.track[data-ready="false"] {
+  visibility: hidden;
+}
+
+.marquee-set {
+  display: flex;
+  flex: none;
+  gap: 22px;
+  padding-right: 22px;
 }
 
 .marquee:hover .track,
@@ -2004,7 +2024,13 @@ a.photo:hover {
 
 @keyframes marquee {
   to {
-    transform: translateX(calc(-50% - 11px));
+    transform: translateX(calc(-1 * var(--marquee-distance)));
+  }
+}
+
+@keyframes marquee-enter {
+  from {
+    transform: translateX(var(--marquee-width));
   }
 }
 
@@ -2307,8 +2333,23 @@ footer .wrap {
     justify-content: center;
   }
 
+  .marquee-entry {
+    width: auto;
+    animation: none;
+  }
+
+  .marquee-set {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-right: 0;
+  }
+
   .track [aria-hidden="true"] {
     display: none;
+  }
+
+  .track[data-ready="true"] {
+    visibility: visible;
   }
 }
 
