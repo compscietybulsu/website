@@ -13,6 +13,7 @@ const COLUMNS = [
       { label: "Blog", href: "/blog" },
       { label: "Events", href: "/events" },
       { label: "Showcase", href: "/showcase" },
+      { label: "Datacamp", href: "/datacamp" },
     ],
   },
   {
