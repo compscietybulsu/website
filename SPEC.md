@@ -174,6 +174,7 @@ components; announcements reuse the blogs API as a stand-in (see §4).
 | `/blog/:id` | `app/blog/[id]/page.js` | Live — single post from `GET /api/blogs/:id` |
 | `/events` | `app/events/page.js` | Planned — public list of events |
 | `/events/:id` | `app/events/[id]/page.js` | Planned — single event detail |
+| `/datacamp` | `app/datacamp/page.js` | Live — DataCamp Donates scholarship information |
 | `/contact` | — | **No standalone page.** Nav/Footer "Contact" links anchor to `#site-footer`, which has a "Contact Us" block — no 404. Issue #10 closed via unlink. |
 | `/admin` | `app/admin/page.js` | Live — login form, posts to `/api/auth/login` |
 | `/admin/dashboard` | `app/admin/dashboard/page.js` | Live — list/delete blogs, behind `AdminGuard` |
