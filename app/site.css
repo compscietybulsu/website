@@ -328,6 +328,12 @@ body::before {
   top: env(safe-area-inset-top, 0px);
   z-index: 60;
   padding-block: 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--edge);
+}
+
+.nav-bar.glass {
+  background: var(--tone-2);
 }
 
 .nav-bar {
@@ -665,7 +671,7 @@ body::before {
   grid-template-columns: minmax(0, 1fr);
 }
 
-.datacamp-body > section {
+.datacamp-body>section {
   min-width: 0;
 }
 
@@ -724,6 +730,7 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .datacamp-marquee .marquee-entry,
   .datacamp-marquee .track {
     animation: none;
