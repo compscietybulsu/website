@@ -32,9 +32,14 @@ const BENEFITS = [
 
 function ApplyButton() {
   return (
-    <button className="btn btn-primary datacamp-apply" type="button" disabled>
+    <a
+      className="btn btn-primary datacamp-apply"
+      href="https://forms.gle/ssukqZSZkFDjKbny7"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       Apply Now
-    </button>
+    </a>
   );
 }
 
